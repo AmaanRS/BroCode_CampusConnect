@@ -77,9 +77,9 @@ function SignupPage() {
 
   function handleSignup(e) {
     e.preventDefault();
-    if (!email.includes("@vcet.edu.in")) {
-      setInputErrorEmail(true);
-    }
+    // if (!email.includes("@vcet.edu.in")) {
+    //   setInputErrorEmail(true);
+    // }
     if (password.length < 6 || confirmPass.length < 6) {
       setPassError(true);
       setPassErrmsg("password length must be greater than 6");
