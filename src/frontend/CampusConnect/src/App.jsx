@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import Error from "./pages/Error";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
+import MasterLayout from "./pages/MasterLayout";
 import ProfilePage from "./pages/ProfilePage";
 
 function App() {
@@ -19,7 +20,11 @@ function App() {
       element: <LoginPage />,
     },
     {
-      path: "/profile",
+      path: "/master",
+      element: <MasterLayout />,
+    },
+    {
+      path: "profile",
       element: <ProfilePage />,
     },
   ]);
