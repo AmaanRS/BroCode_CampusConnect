@@ -138,23 +138,5 @@ const Verify_Otp_Create_User =async (req,res)=>{
     }
 }
 
-const isAccountActive = async (req,res)=>{
-    try {
-        const { email } = req.body
 
-        const response = await userModel.findOne({email:email})
-
-        if(!response){
-            return res.json({message:"User does not exist",success:false})
-        }
-
-        return res.json({message:"The status of Account is",success:true,status:response.isAccountActive})
-        
-    } catch (error) {
-        console.log(error)
-        return res.json({message:error,success:false})
-    }
-}
-
-
-module.exports = { login,signup,Verify_Otp_Create_User,isAccountActive }
+module.exports = { login,signup,Verify_Otp_Create_User }
