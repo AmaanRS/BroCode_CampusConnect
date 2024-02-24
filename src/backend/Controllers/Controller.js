@@ -7,6 +7,11 @@ const cryptr = new Cryptr(`${process.env.ENCRYPTION_KEY}`, {
   pbkdf2Iterations: 10,
   saltLength: 5,
 });
+const Cryptr = require("cryptr");
+const cryptr = new Cryptr(`${process.env.ENCRYPTION_KEY}`, {
+  pbkdf2Iterations: 10,
+  saltLength: 5,
+});
 
 var otp;
 const Generate_Otp = () => {
@@ -108,7 +113,6 @@ const Nodemailer_Message = async (email) => {
   }
 };
 
-//Bug in this -- jwt payload is visible to everyone
 const signup = async (req, res) => {
   try {
     const { email, password } = req.body;

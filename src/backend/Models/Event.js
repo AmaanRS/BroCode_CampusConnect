@@ -8,7 +8,6 @@ const eventSchema = new mongoose.Schema({
     EventDescription: {
         type: String,
         required: true,
-        maxlength: 1000,
     },
     EventDate:{
         type:Date,
@@ -17,23 +16,25 @@ const eventSchema = new mongoose.Schema({
     },
     EventTimeSlot:{
         type:String,
+        enum:["Slot1","Slot2","Slot3"],
         required:true
     },
     EventRoom:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "EventRoom"
     },
-    Location: {
-        type: String,
-        maxlength: 200
-    },
+    // Location: {
+    //     type: String,
+    //     maxlength: 200
+    // },
     OrganizingCommittee: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Committee",
         required: true,
     },
     isEventConfirmed:{
-        type:Boolean,
+        type:String,
+        enum:["true","false","pending"],
         default:false
     }
 })
