@@ -1,10 +1,35 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import avatarsvg from "../assets/Signinpage/avatar.svg";
 import unlocksvg from "../assets/Signinpage/unlock.svg";
 import wavepng from "../assets/Signinpage/wave.png";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  async function handleLogin(cred) {
+    const res = await fetch("http://localhost:8000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cred),
+    });
+    const { success, message } = await res.json();
+    console.log();
+    if (success) {
+      navigate("/profile");
+    }
+    return message;
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log(email, password);
+    handleLogin({ email, password });
+  }
   return (
     <>
       <motion.img
@@ -25,6 +50,7 @@ function LoginPage() {
           className="hidden lg:block w-1/2 hover:scale-150 transition-all duration-500 transform mx-auto"
         />
         <motion.form
+          onSubmit={handleSubmit}
           animate={{ y: 0, opacity: 1, scale: 1 }}
           initial={{ y: -50, opacity: 0, scale: 0.5 }}
           transition={{ duration: 0.5 }}
@@ -39,6 +65,8 @@ function LoginPage() {
 
             <input
               required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               type="email"
               placeholder="E-mail"
               className="pl-8 border-b-2 font-display focus:outline-none focus:border-primarycolor text-lg focus:bg-slate-100"
@@ -47,6 +75,8 @@ function LoginPage() {
           <div className="relative mt-8">
             <i className="fa fa-lock absolute text-yellow-700 text-xl" />
             <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
               type="password"
               placeholder="password"

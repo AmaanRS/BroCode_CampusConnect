@@ -2,6 +2,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import Error from "./pages/Error";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "./App.css";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   const router = createBrowserRouter([
@@ -15,9 +18,20 @@ function App() {
       path: "/login",
       element: <LoginPage />,
     },
+    {
+      path: "/profile",
+      element: <ProfilePage />,
+    },
   ]);
+  const queryClient = new QueryClient();
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </>
+  );
 }
 
 export default App;
