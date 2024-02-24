@@ -1,11 +1,8 @@
 const userModel = require("../Models/User");
 const requestModel = require("../Models/Request");
 const committeeModel = require("../Models/Committee");
-const userModel = require("../Models/User")
-const requestModel = require("../Models/Request")
-const committeeModel = require("../Models/Committee")
-const eventModel = require("../Models/Event")
-const eventRoomModel = require("../Models/EventRoom")
+const eventModel = require("../Models/Event");
+const eventRoomModel = require("../Models/EventRoom");
 
 const createUser = async (req, res) => {
   try {
@@ -19,7 +16,6 @@ const createUser = async (req, res) => {
       isTeacher,
       isAdmin,
     } = req.body;
-    console.log({});
 
     if (!username || !department) {
       return res.json({
@@ -395,11 +391,31 @@ const createCommittee = async (req, res) => {
   }
 };
 
+//If a teacher is a mentor to more than one committee then also he will only be able to create a event for the first Committee he created -- BUG
 const createEvent = async (req, res) => {
   try {
     if (!req.middlewareRes.success) {
       return res.json({
         message: "There user is not Authenticated",
+        success: false,
+      });
+    }
+
+    //The date should be in Date datatype
+    //For EventTimeslot check eventModel
+    const { EventName, EventDescription, EventDate, EventTimeSlot, EventRoom } =
+      req.body;
+
+    if (
+      !EventName ||
+      !EventDescription ||
+      !EventDate ||
+      !EventTimeSlot ||
+      !EventRoom
+    ) {
+      return res.json({
+        message:
+          "EventName,EventDescription,EventDate,EventTimeSlot are mandatory fields",
         success: false,
       });
     }
@@ -413,67 +429,85 @@ const createEvent = async (req, res) => {
       });
     }
 
+    //Current logged in user
     const user = await userModel.findOne({ email: email });
 
     if (!user) {
       return res.json({ message: "The user does not Exist", success: false });
     }
-            const resOfRequest = await requestModel.create({
-                RequestToUser:principal._id,
-                RequestCommittee:newCommittee._id,
-                RequestStatus:"pending"
-            })
 
-            return res.json({message:"Your Committee has been created Successfully please wait for the principal to verify it",success:true})
+    //If the user is the Mentor of Committee
+    const doesCommitteeExists = await committeeModel.findOne({
+      CommitteeMentor: user._id,
+    });
 
-        }else{
-            return res.json({message:"You should either be a Teacher or Hod to Create a Committee",success:false})
-        }
-
-        
-    } catch (error) {
-        console.log(error)
-        return res.json({message:"Could not create the event due to some error",success:false})
+    if (!doesCommitteeExists) {
+      return res.json({
+        message: "You have to be a Mentor of the Committee to Create a Event",
+        success: false,
+      });
     }
-}
 
-//If a teacher is a mentor to more than one committee then also he will only be able to create a event for the first Committee he created -- BUG
-const createEvent =async (req,res)=>{
-    try {
-        if(!req.middlewareRes.success){
-            return res.json({message:"There user is not Authenticated",success:false})
-        }
+    //Get the room's id from the database
+    const room = await eventRoomModel.findOne({
+      EventRoomName: EventRoom,
+      EventRoomEventTimeSlot: EventTimeSlot,
+      isEventRoomBooked: false,
+    });
 
-        //The date should be in Date datatype
-        //For EventTimeslot check eventModel
-        const { 
-            EventName,
-            EventDescription,
-            EventDate,
-            EventTimeSlot,
-            EventRoom
-        } = req.body
+    if (!room) {
+      return res.json({
+        message: "This room cannot be booked",
+        success: false,
+      });
+    }
 
-        if(!EventName || !EventDescription || !EventDate || !EventTimeSlot || !EventRoom ){
-            return res.json({message:"EventName,EventDescription,EventDate,EventTimeSlot are mandatory fields",success:false})
-        }
+    const newEvent = await eventModel.create({
+      EventName: EventName,
+      EventDescription: EventDescription,
+      EventDate: Date(EventDate),
+      EventTimeSlot: EventTimeSlot,
+      EventRoom: room._id,
+      OrganizingCommittee: doesCommitteeExists._id,
+      isEventConfirmed: "pending",
+    });
 
-        const email = req.middlewareRes.decodedToken
+    if (!newEvent) {
+      return res.json({ message: "The Event was not created", success: false });
+    }
 
-        if(!email){
-            return res.json({message:"There user is not Authenticated",success:false})
-        }
+    const hod = await userModel.findOne({
+      isHod: true,
+      Department: user.Department,
+    });
 
-        //Current logged in user
-        const user = await userModel.findOne({email:email})
+    if (!hod) {
+      return res.json({
+        message: "The Hod for this department does not exist",
+        success: false,
+      });
+    }
 
-        if(!user){
-            return res.json({message:"The user does not Exist",success:false})
-        }
+    const resOfRequest = await requestModel.create({
+      RequestEvent: newEvent._id,
+      RequestEventRoom: room._id,
+      RequestToUser: hod._id,
+      RequestCommittee: doesCommitteeExists._id,
+      RequestStatus: "pending",
+    });
 
-    // if( user.isTeacher || user.isHod ){
-    //     const newEvent = await
-    // }
+    if (!resOfRequest) {
+      return res.json({
+        message: "Request could not be sent to HOD",
+        success: false,
+      });
+    }
+
+    return res.json({
+      message:
+        "Your Event has been Created Successfully Please wait for the Hod of your department to confirm",
+      success: true,
+    });
   } catch (error) {
     console.log(error);
     return res.json({
@@ -482,61 +516,5 @@ const createEvent =async (req,res)=>{
     });
   }
 };
-        //If the user is the Mentor of Committee
-        const doesCommitteeExists = await committeeModel.findOne({CommitteeMentor:user._id})
-
-        if(!doesCommitteeExists){
-            return res.json({message:"You have to be a Mentor of the Committee to Create a Event",success:false})
-        }
-
-        //Get the room's id from the database
-        const room = await eventRoomModel.findOne({EventRoomName:EventRoom,EventRoomEventTimeSlot:EventTimeSlot,isEventRoomBooked:false})
-
-        if(!room){
-            return res.json({message:"This room cannot be booked",success:false})
-        }
-        
-        const newEvent = await eventModel.create(
-        {
-            EventName:EventName,
-            EventDescription:EventDescription,
-            EventDate:Date(EventDate),
-            EventTimeSlot:EventTimeSlot,
-            EventRoom:room._id,
-            OrganizingCommittee:doesCommitteeExists._id,
-            isEventConfirmed:"pending"
-        })
-
-        if(!newEvent){
-            return res.json({message:"The Event was not created",success:false})
-        }
-
-        const hod = await userModel.findOne({isHod:true,Department:user.Department})
-
-        if(!hod){
-            return res.json({message:"The Hod for this department does not exist",success:false})
-        }
-
-        const resOfRequest = await requestModel.create({
-            RequestEvent:newEvent._id,
-            RequestEventRoom:room._id,
-            RequestToUser:hod._id,
-            RequestCommittee:doesCommitteeExists._id,
-            RequestStatus:"pending"
-        })
-
-        if(!resOfRequest){
-            return res.json({message:"Request could not be sent to HOD",success:false})
-        }
-
-        return res.json({message:"Your Event has been Created Successfully Please wait for the Hod of your department to confirm",success:true})
-        
-    } catch (error) {
-        console.log(error)
-        return res.json({message:"Could not create the event due to some error",success:false})
-    }
-}
-
-
 
 module.exports = { createUser, createEvent, createCommittee };
