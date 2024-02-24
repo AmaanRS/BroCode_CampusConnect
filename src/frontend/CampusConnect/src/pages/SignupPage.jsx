@@ -1,21 +1,34 @@
+import { Link } from "react-router-dom";
 import avatarsvg from "../assets/Signinpage/avatar.svg";
 import unlocksvg from "../assets/Signinpage/unlock.svg";
 import wavepng from "../assets/Signinpage/wave.png";
+import { motion } from "framer-motion";
 
 function SignupPage() {
   return (
     <>
-      <img
+      <motion.img
+        initial={{ x: -100, opacity: 0.5 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
         src={wavepng}
         className="fixed hidden lg:block inset-0 h-full"
         style={{ zIndex: -1 }}
       />
       <div className="w-screen h-screen flex flex-col justify-center items-center lg:grid lg:grid-cols-2">
-        <img
+        <motion.img
+          initial={{ x: -50, opacity: 0, scale: 0.5 }}
+          animate={{ x: 0, opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
           src={unlocksvg}
           className="hidden lg:block w-1/2 hover:scale-150 transition-all duration-500 transform mx-auto"
         />
-        <form className="flex flex-col justify-center items-center w-1/2">
+        <motion.form
+          animate={{ y: 0, opacity: 1, scale: 1 }}
+          initial={{ y: -50, opacity: 0, scale: 0.5 }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col justify-center items-center w-1/2"
+        >
           <img src={avatarsvg} className="w-32" />
           <h2 className="my-8 font-display font-bold text-3xl text-gray-700 text-center">
             Sign up for Campus Connect
@@ -24,6 +37,7 @@ function SignupPage() {
             <i className="fa fa-user absolute text-yellow-700 text-xl" />
 
             <input
+              required
               type="email"
               placeholder="E-mail"
               className="pl-8 border-b-2 font-display focus:outline-none focus:border-primarycolor text-lg focus:bg-slate-100"
@@ -32,6 +46,7 @@ function SignupPage() {
           <div className="relative mt-8">
             <i className="fa fa-lock absolute text-yellow-700 text-xl" />
             <input
+              required
               type="password"
               placeholder="password"
               className="pl-8 border-b-2 font-display focus:outline-none focus:border-primarycolor focus:bg-slate-100  text-lg"
@@ -41,6 +56,7 @@ function SignupPage() {
             <i className=" fa fa-solid fa-key absolute text-yellow-700 text-xl" />
 
             <input
+              required
               type="password"
               placeholder="confirm password"
               className="pl-8 border-b-2 font-display focus:outline-none focus:border-primarycolor focus:bg-slate-100  text-lg"
@@ -50,13 +66,17 @@ function SignupPage() {
           {/* <a href="#" className="self-end mt-4 text-gray-600 font-bold">
             Forgot password?
           </a> */}
-          <a
-            href="#"
-            className="py-3 px-20 bg-primarycolor bg-yellow-400 rounded-full text-white font-bold uppercase text-lg mt-4 transform hover:translate-y-1 transition-all duration-500 hover:bg-yellow-500"
-          >
+          <button className="py-3 px-20 bg-primarycolor bg-yellow-400 rounded-full text-white font-bold uppercase text-lg mt-4 transform hover:translate-y-1 transition-all duration-500 hover:bg-yellow-500">
             Register
-          </a>
-        </form>
+          </button>
+          <br />
+          <p className="text-sm text-slate-600">
+            All ready a user ?
+            <Link className="text-yellow-700" to={"/login"}>
+              login
+            </Link>
+          </p>
+        </motion.form>
       </div>
     </>
   );
