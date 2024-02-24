@@ -13,7 +13,43 @@ const userModel = new mongoose.Schema({
         required:true,
         type:String,
         unique:true
-    }
+    },
+    isStudent:{
+        type:Boolean,
+        default:false
+    },
+    isPrincipal:{
+        type:Boolean,
+        default:false
+    },
+    isHod:{
+        type:Boolean,
+        default:false
+    },
+    isTeacher:{
+        type:Boolean,
+        default:false
+    },
+    isAdmin:{
+        type:Boolean,
+        default:false
+    },
+    Department:{
+        type:String,
+        required:true
+    },
+    isAccountActive:{
+        type:String,
+        enum:["true","false","pending"],
+        default:false,
+        required:true
+    },
+    Requests:[
+        {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Request"
+        }
+    ]
 },{
     timestamps:true
 })
