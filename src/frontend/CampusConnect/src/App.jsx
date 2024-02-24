@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
 import MasterLayout from "./pages/MasterLayout";
 import ProfilePage from "./pages/ProfilePage";
+import UserContextProvider from "./store/UserContextProvider";
 
 function App() {
   const router = createBrowserRouter([
@@ -33,7 +34,9 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <UserContextProvider>
+          <RouterProvider router={router} />
+        </UserContextProvider>
       </QueryClientProvider>
     </>
   );
