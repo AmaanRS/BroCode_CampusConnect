@@ -1,8 +1,40 @@
 {
-  "hash": "62d619a8",
+  "hash": "f3ac9ad8",
   "configHash": "34ec1fb9",
-  "lockfileHash": "e3b0c442",
-  "browserHash": "b17b2e2b",
-  "optimized": {},
-  "chunks": {}
+  "lockfileHash": "5e26b7f8",
+  "browserHash": "d52e20e7",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "919c8967",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "2cac06bf",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "5100acb5",
+      "needsInterop": false
+    },
+    "framer-motion": {
+      "src": "../../node_modules/framer-motion/dist/es/index.mjs",
+      "file": "framer-motion.js",
+      "fileHash": "877480ac",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-KJUJBIHA": {
+      "file": "chunk-KJUJBIHA.js"
+    },
+    "chunk-W4VDMLRG": {
+      "file": "chunk-W4VDMLRG.js"
+    }
+  }
 }
