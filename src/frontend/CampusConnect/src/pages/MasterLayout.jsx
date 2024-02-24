@@ -1,4 +1,6 @@
 function MasterLayout() {
+  const token = localStorage.getItem("token");
+  console.log(token);
   return (
     <>
       {/* sidebar frag  */}

@@ -38,18 +38,23 @@ function SignupPage() {
       },
       body: JSON.stringify(cred),
     });
-    const { message, success } = await res.json();
+    const { message, success, token } = await res.json();
     if (success) {
       setIsOtp(true);
+      localStorage.setItem("token", token);
+
+      console.log(token);
     }
     return message;
   }
 
   async function submitOtp(cred) {
+    const token = localStorage.getItem("token");
     const res = await fetch("http://localhost:8000/Verify_Otp_Create_User", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(cred),
     });
