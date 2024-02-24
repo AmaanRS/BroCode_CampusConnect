@@ -6,6 +6,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
 import MasterLayout from "./pages/MasterLayout";
 import ProfilePage from "./pages/ProfilePage";
+import AdminPage from "./pages/Admin/AdminPage";
+import TeacherPage from "./pages/Teacher/TeacherPage";
+import HodPage from "./pages/Hod/HodPage";
 // import UserContextProvider from "./store/UserContextProvider";
 
 function App() {
@@ -25,8 +28,20 @@ function App() {
       element: <MasterLayout />,
     },
     {
-      path: "profile",
+      path: "/profile",
       element: <ProfilePage />,
+    },
+    {
+      path: "/admin",
+      element: <AdminPage />,
+    },
+    {
+      path: "/teacher",
+      element: <TeacherPage />,
+    },
+    {
+      path: "/hod",
+      element: <HodPage />,
     },
   ]);
   const queryClient = new QueryClient();

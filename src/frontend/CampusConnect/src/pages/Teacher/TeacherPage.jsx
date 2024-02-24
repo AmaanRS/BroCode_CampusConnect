@@ -1,4 +1,4 @@
-function MasterLayout() {
+function TeacherPage() {
   return (
     <>
       {/* sidebar frag  */}
@@ -340,4 +340,4 @@ function MasterLayout() {
   );
 }
 
-export default MasterLayout;
+export default TeacherPage;

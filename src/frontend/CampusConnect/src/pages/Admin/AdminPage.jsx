@@ -1,4 +1,4 @@
-function MasterLayout() {
+function AdminPage() {
   return (
     <>
       {/* sidebar frag  */}
@@ -340,4 +340,4 @@ function MasterLayout() {
   );
 }
 
-export default MasterLayout;
+export default AdminPage;
