@@ -37,7 +37,19 @@ const userModel = new mongoose.Schema({
     Department:{
         type:String,
         required:true
-    }
+    },
+    isAccountActive:{
+        type:String,
+        enum:["true","false","pending"],
+        default:false,
+        required:true
+    },
+    Requests:[
+        {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Request"
+        }
+    ]
 },{
     timestamps:true
 })
