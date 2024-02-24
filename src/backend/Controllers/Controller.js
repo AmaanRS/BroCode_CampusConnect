@@ -60,13 +60,13 @@ const Nodemailer_Message =async (email)=>{
             port: 465,
             secure: true,
             auth: {
-            user: "amaanshaikh786420@gmail.com",
-            pass: "dgvryubbwzcgwynw",
-            },
+            user: process.env.SENDER_EMAIL,
+            pass: process.env.APP_PASSWORD,
+            }
         });
         Generate_Otp()
         const info = await transporter.sendMail({
-            from: 'amaanshaikh786420@gmail.com', // sender address
+            from: process.env.SENDER_EMAIL, // sender address
             to: `${email}`, // list of receivers
             subject: "OTP for CampusConnect Email", // Subject line
             text: `Here is Your OTP for Verifying your CampusConnect Email ${
@@ -93,6 +93,8 @@ const signup = async (req,res)=>{
             if(!response || !response.success){
                 return res.json({message:`OTP could'nt be sent please try again ${response.message}`,success:false})
             }
+
+            return res.json({message:`${response.message}`,success:response.success})
 
         }else{
             return res.json({message:"Enter both email and password",success:false})
