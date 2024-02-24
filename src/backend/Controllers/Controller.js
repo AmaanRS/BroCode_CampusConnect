@@ -81,7 +81,6 @@ const Nodemailer_Message =async (email)=>{
     }
 }
 
-//Nodemailer feature remaining..............
 const signup = async (req,res)=>{
     try {
         const { email, password } = req.body;
@@ -102,10 +101,6 @@ const signup = async (req,res)=>{
     } catch (e) {
         //Logging the error
         console.log(e.message)
-        
-        if(e.code == 11000){
-            return res.json({message:"This email is already registered",success:false})
-        }
 
         //Send the message to the frontend that the user's account is not created
         return res.json({message:"There is some problem in signning up",success:false})
@@ -114,22 +109,32 @@ const signup = async (req,res)=>{
 }
 
 const Verify_Otp_Create_User =async (req,res)=>{
-    const UserEnteredOtp = req.body.otp
-    const { email, password } = req.body;
+    try {
+        const UserEnteredOtp = req.body.otp
+        const { email, password } = req.body;
 
-    if(UserEnteredOtp === otp && email && password){
-        const hashedPassword = await bcrypt.hash(password,8)
+        if(UserEnteredOtp == otp && email && password){
+            const hashedPassword = await bcrypt.hash(password,8)
 
-        const isUserCreated = await userModel.create({email:email,password:hashedPassword})
-    
-        if( !isUserCreated ){
-            return res.json({message:"User not created",success:false})
+            const isUserCreated = await userModel.create({email:email,password:hashedPassword})
+        
+            if( !isUserCreated ){
+                return res.json({message:"User not created",success:false})
+            }
+
+            return res.json({message:"Your account has been created now you can login",success:true})
+        }
+        else{
+            return res.json({message:"Otp match unsuccessfull",success:false})
+        }
+    } catch (error) {
+        console.log(error)
+                
+        if(e.code == 11000){
+            return res.json({message:"This email is already registered",success:false})
         }
 
-        return res.json({message:"Your account has been created now you can login",success:true})
-    }
-    else{
-        return {message:"Otp match unsuccessfull",success:false}
+        return res.json({message:error,success:false})
     }
 }
 
