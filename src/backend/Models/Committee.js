@@ -3,7 +3,8 @@ const mongoose = require("mongoose")
 const committeeSchema = new mongoose.Schema({
     CommitteeName:{
         type:String,
-        required:true
+        required:true,
+        unique:true
     },
     CommitteeDescription: {
         type: String,
@@ -21,7 +22,13 @@ const committeeSchema = new mongoose.Schema({
     },
     CommitteeTechnicalHead:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        required:true
+    },
+    isAccountActive:{
+        type:String,
+        enum:["true","false","pending"],
+        default:false
     },
     CommitteeEvents:[
         {

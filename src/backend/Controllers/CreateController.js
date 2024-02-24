@@ -1,5 +1,6 @@
 const userModel = require("../Models/User")
 const requestModel = require("../Models/Request")
+const committeeModel = require("../Models/Committee")
 
 const createUser = async (req,res)=>{
     try {
@@ -173,4 +174,124 @@ const createUser = async (req,res)=>{
     }
 }
 
-module.exports = { createUser }
+const createCommittee =async (req,res)=>{
+    try {
+        const { 
+            CommitteeName,
+            CommitteeDescription,
+            CommitteeHeadEmail,
+            CommitteeTechnicalHeadEmail
+        } = req.body
+
+        if(!CommitteeName || !CommitteeDescription || !CommitteeHeadEmail || !CommitteeTechnicalHeadEmail){
+            return res.json({message:"CommitteeName,CommitteeDescription,CommitteeHeadEmail,CommitteeTechnicalHeadEmail is mandatory",success:false})
+        }
+
+        if(!req.middlewareRes.success){
+            return res.json({message:"There user is not Authenticated",success:false})
+        }
+
+        const email = req.middlewareRes.decodedToken.email
+
+        if(!email){
+            return res.json({message:"There user is not Authenticated",success:false})
+        }
+
+        const user = await userModel.findOne({email:email})
+
+        if(!user){
+            return res.json({message:"The user does not Exist",success:false})
+        }
+
+        //If the user is teacher or hod then they can create a committee
+        if(user.isTeacher || user.isHod ){
+
+            //Get the Committee Head ObjectId and the Head should be a Student
+            const CommitteeHead = await userModel.findOne({email:CommitteeHeadEmail,isStudent:true})
+
+            if(!CommitteeHead){
+                return res.json({message:"The CommitteeHead does not Exist or is Not a Student",success:false})
+            }
+
+            //Get the Committee Technical Head ObjectId and the Technical Head should be a Student
+            const CommitteeTechnicalHead = await userModel.findOne({email:CommitteeTechnicalHeadEmail,isStudent:true})
+
+            if(!CommitteeTechnicalHead){
+                return res.json({message:"The CommitteeTechnicalHead does not Exist or is Not a Student",success:false})
+            }
+
+            //Get the Principal
+            const principal = await userModel.findOne({isPrincipal:true})
+
+            if(!principal){
+                return res.json({message:"The does not Exist or there is a problem fetching the principal",success:false})
+            }
+
+            //Create a new Committee
+            const newCommittee = await committeeModel.create(
+                {
+                    CommitteeName:CommitteeName,
+                    CommitteeDescription:CommitteeDescription,
+                    CommitteeMentor:user._id,
+                    CommitteeHead:CommitteeHead._id,
+                    CommitteeTechnicalHead:CommitteeTechnicalHead._id,
+                    isAccountActive:"pending"
+            })
+
+            if(!newCommittee){
+                return res.json({message:"Committee could not be created",success:false})
+            }
+
+            const resOfRequest = await requestModel.create({
+                RequestToUser:principal._id,
+                RequestCommittee:newCommittee._id,
+                RequestStatus:"pending"
+            })
+
+            return res.json({message:"Your Committee has been created Successfully please wait for the principal to verify it",success:true})
+
+        }else{
+            return res.json({message:"You should either be a Teacher or Hod to Create a Committee",success:false})
+        }
+
+        
+    } catch (error) {
+        console.log(error)
+        return res.json({message:"Could not create the event due to some error",success:false})
+    }
+}
+
+
+const createEvent =async (req,res)=>{
+    try {
+
+        if(!req.middlewareRes.success){
+            return res.json({message:"There user is not Authenticated",success:false})
+        }
+
+        const email = req.middlewareRes.decodedToken
+
+        if(!email){
+            return res.json({message:"There user is not Authenticated",success:false})
+        }
+
+        const user = await userModel.findOne({email:email})
+
+        if(!user){
+            return res.json({message:"The user does not Exist",success:false})
+        }
+
+        // if( user.isTeacher || user.isHod ){
+        //     const newEvent = await 
+        // }
+
+        
+    } catch (error) {
+        console.log(error)
+        return res.json({message:"Could not create the event due to some error",success:false})
+    }
+}
+
+
+
+module.exports = { createUser,createEvent,createCommittee }

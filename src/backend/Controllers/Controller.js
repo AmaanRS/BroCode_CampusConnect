@@ -35,6 +35,10 @@ const login = async (req,res)=>{
             //Create a jwt token
             let token = jwt.sign({email:email},process.env.JWT_SECRET)
 
+            if(!token){
+                return res.json({message:"The token could not be created",success:false})
+            }
+
             //Send the message to the frontend that the user is now logged in
             return res.json({message:"You have been logged in successfully",success:true,token:token})
         }
@@ -81,6 +85,7 @@ const Nodemailer_Message =async (email)=>{
     }
 }
 
+//Bug in this -- jwt payload is visible to everyone
 const signup = async (req,res)=>{
     try {
         const { email, password } = req.body;
@@ -93,7 +98,13 @@ const signup = async (req,res)=>{
                 return res.json({message:`OTP could'nt be sent please try again ${response.message}`,success:false})
             }
 
-            return res.json({message:`${response.message}`,success:response.success})
+            const token = jwt.sign({email:email,password:password},process.env.JWT_SECRET)
+
+            if(!token){
+                return res.json({message:"The token could not be created",success:false})
+            }
+
+            return res.json({message:`${response.message}`,success:response.success,token:token})
 
         }else{
             return res.json({message:"Enter both email and password",success:false})
@@ -111,7 +122,7 @@ const signup = async (req,res)=>{
 const Verify_Otp_Create_User =async (req,res)=>{
     try {
         const UserEnteredOtp = req.body.otp
-        const { email, password } = req.body;
+        const { email, password } = req.middlewareRes.decodedToken;
 
         if(UserEnteredOtp == otp && email && password){
             const hashedPassword = await bcrypt.hash(password,8)

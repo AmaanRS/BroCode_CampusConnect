@@ -4,8 +4,10 @@ const { login,
     } = require("../Controllers/Controller")
 
 const {
-    createUser
-    } = require("../Controllers/UserCreateController")
+    createUser,
+    createEvent,
+    createCommittee
+    } = require("../Controllers/CreateController")
 
 const {
     isAccountActive,
@@ -20,8 +22,10 @@ Router.route("/login").post(login)
 Router.route("/signup").post(signup)
 Router.route("/isAccountActive").post(isAccountActive)
 Router.route("/getAllCommittees").post(getAllCommittees)
-Router.route("/Verify_Otp_Create_User").post(Verify_Otp_Create_User)
+Router.route("/Verify_Otp_Create_User").post(cookieChecker,Verify_Otp_Create_User)
 Router.route("/createUser").post(createUser)
+Router.route("/createCommittee").post(cookieChecker,createCommittee)
+Router.route("/createEvent").post(cookieChecker,createEvent)
 
 
 module.exports = Router

@@ -17,6 +17,10 @@ const requestSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
+    RequestCommittee:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Committee",
+    },
     RequestStatus:{
         type:String,
         enum:["accepted","rejected","pending"],
