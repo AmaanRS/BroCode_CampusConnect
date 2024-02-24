@@ -35,14 +35,12 @@ const userModel = new mongoose.Schema({
         default:false
     },
     Department:{
-        type:String,
-        required:true
+        type:String
     },
     isAccountActive:{
         type:String,
         enum:["true","false","pending"],
         default:false,
-        required:true
     },
     Requests:[
         {
