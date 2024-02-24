@@ -43,7 +43,7 @@ function SignupPage() {
       setIsOtp(true);
       localStorage.setItem("token", token);
 
-      console.log(token);
+      // console.log(token);
     }
     return message;
   }
@@ -63,7 +63,7 @@ function SignupPage() {
     //   setIsOtp(true);
     // }
     const { success, message } = await res.json();
-    console.log(success, message);
+    // console.log(success, message);
     if (success) {
       navigate("/login");
     }
@@ -88,7 +88,7 @@ function SignupPage() {
       setPassError(true);
       setPassErrmsg("password does not match");
     }
-    console.log(email, password, confirmPass);
+    // console.log(email, password, confirmPass);
     postData({ email, password });
   }
   return (

@@ -7,7 +7,7 @@ function HodPage() {
   const [commHeadMail, setCommHeadMail] = useState("");
   const [commTechMail, setCommTechMail] = useState("");
   const token = localStorage.getItem("token");
-  console.log(token);
+  // console.log(token);
   async function postCommittee(cred) {
     const res = await fetch("http://localhost:8000/createCommittee", {
       method: "POST",
@@ -18,7 +18,7 @@ function HodPage() {
       body: JSON.stringify(cred),
     });
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
     return data;
   }
 

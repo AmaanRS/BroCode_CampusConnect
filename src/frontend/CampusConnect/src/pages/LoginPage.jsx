@@ -19,7 +19,7 @@ function LoginPage() {
     });
     const { success, message } = await res.json();
     if (success) {
-      console.log("success", email);
+      // console.log("success", email);
       localStorage.setItem("email", email);
       navigate("/profile");
     }

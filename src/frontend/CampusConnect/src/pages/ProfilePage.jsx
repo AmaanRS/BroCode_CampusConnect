@@ -20,7 +20,7 @@ export default function ProfilePage() {
       body: JSON.stringify(cred),
     });
     const data = await res.json(cred);
-    console.log(data);
+    // console.log(data);
     return data;
   }
 
@@ -67,16 +67,16 @@ export default function ProfilePage() {
       default:
         break;
     }
-    console.log(
-      email,
-      username,
-      department,
-      isStudent,
-      isTeacher,
-      isHod,
-      isAdmin,
-      isPrincipal
-    );
+    // console.log(
+    //   email,
+    //   username,
+    //   department,
+    //   isStudent,
+    //   isTeacher,
+    //   isHod,
+    //   isAdmin,
+    //   isPrincipal
+    // );
     postProfile({
       email,
       username,
