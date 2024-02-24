@@ -19,8 +19,21 @@ const createUser = async (req,res)=>{
             return res.json({message:"The user should either be Student or Principal or Hod or Teacher or Admin",success:false})
         }
 
+        if(isAdmin){
+            const response = await userModel.findOneAndUpdate({email:email},{
+                username:username,
+                Department:department,
+                isAdmin:isAdmin
+            },{new:true})
+            if()
+        }
+
         if(isStudent){
-            const response = await userModel.
+            const response = await userModel.findOneAndUpdate({email:email},{
+                username:username,
+                Department:department,
+                isStudent:isStudent
+            })
         }
 
 
