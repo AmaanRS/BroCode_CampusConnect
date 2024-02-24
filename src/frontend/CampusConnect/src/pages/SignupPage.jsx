@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import avatarsvg from "../assets/Signinpage/avatar.svg";
 import unlocksvg from "../assets/Signinpage/unlock.svg";
 import wavepng from "../assets/Signinpage/wave.png";
-import { motion } from "framer-motion";
+import { motion, spring } from "framer-motion";
 
 function SignupPage() {
   return (
@@ -10,7 +10,7 @@ function SignupPage() {
       <motion.img
         initial={{ x: -100, opacity: 0.5 }}
         animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.5, type: spring }}
         src={wavepng}
         className="fixed hidden lg:block inset-0 h-full"
         style={{ zIndex: -1 }}
@@ -26,7 +26,7 @@ function SignupPage() {
         <motion.form
           animate={{ y: 0, opacity: 1, scale: 1 }}
           initial={{ y: -50, opacity: 0, scale: 0.5 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.5, type: spring }}
           className="flex flex-col justify-center items-center w-1/2"
         >
           <img src={avatarsvg} className="w-32" />

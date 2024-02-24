@@ -66,7 +66,7 @@ function LoginPage() {
           <br />
           <p className="text-sm text-slate-600">
             Dont have account ?
-            <Link className="text-yellow-700" to={"/signup"}>
+            <Link className="text-yellow-700" to={"/"}>
               SignUp
             </Link>
           </p>
