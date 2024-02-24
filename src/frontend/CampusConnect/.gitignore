@@ -11,7 +11,10 @@ node_modules
 dist
 dist-ssr
 *.local
-
+.vite
+.vite/deps
+_metadata.json
+src/frontend/CampusConnect/.vite/deps/_metadata.json
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
