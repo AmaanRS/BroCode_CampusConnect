@@ -40,7 +40,7 @@ const userModel = new mongoose.Schema({
     isAccountActive:{
         type:String,
         enum:["true","false","pending"],
-        default:false,
+        default:false
     },
     Requests:[
         {

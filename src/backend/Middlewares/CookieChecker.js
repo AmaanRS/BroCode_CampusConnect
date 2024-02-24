@@ -15,6 +15,10 @@ const cookieChecker = async( req, res, next )=>{
         //Check the token with secret key
         const decodedToken = jwt.verify(token,process.env.JWT_SECRET)
 
+        if(!decodedToken){
+            req.middlewareRes = {message:"User not authenticated",success:false}
+        }
+
         req.middlewareRes = {message:"The user is authenticated",success:true,decodedToken:decodedToken}
 
         next()

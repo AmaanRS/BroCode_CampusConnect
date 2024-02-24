@@ -1,9 +1,4 @@
-import { useContext } from "react";
-import { UserContext } from "../store/UserContextProvider";
-
 export default function ProfilePage() {
-  const { userId } = useContext(UserContext);
-  console.log(userId);
   return (
     <div>
       <div className="min-h-screen flex justify-center items-center">

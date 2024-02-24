@@ -3,13 +3,11 @@ import avatarsvg from "../assets/Signinpage/avatar.svg";
 import unlocksvg from "../assets/Signinpage/unlock.svg";
 import wavepng from "../assets/Signinpage/wave.png";
 import { motion } from "framer-motion";
-import { useContext, useState } from "react";
-import { UserContext } from "../store/UserContextProvider";
+import { useState } from "react";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { updateUserId } = useContext(UserContext);
   const navigate = useNavigate();
   async function handleLogin(cred) {
     const res = await fetch("http://localhost:8000/login", {
@@ -22,7 +20,6 @@ function LoginPage() {
     const { success, message } = await res.json();
     if (success) {
       console.log("success", email);
-      updateUserId(email);
       navigate("/profile");
     }
     return message;
