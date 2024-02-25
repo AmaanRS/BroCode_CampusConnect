@@ -36,12 +36,17 @@ function LoginPage() {
       },
       body: JSON.stringify(cred),
     });
-    const { success, message } = await res.json();
+    const { success, message, token } = await res.json();
     setMsg(message);
+    console.log(message);
     if (success) {
       // console.log("success", email);
+      console.log(token);
+      localStorage.setItem("token", token);
       localStorage.setItem("email", email);
+
       isAccActive({ email });
+      // navigate("/admin");
     }
     return message;
   }
@@ -121,7 +126,11 @@ function LoginPage() {
             </Link>
           </p>
           {msg && <p> {msg} </p>}
-          {accmsg && <p> {accmsg} </p>}
+          {accmsg && (
+            <p>
+              {accmsg} {accstatus}
+            </p>
+          )}
         </motion.form>
       </div>
     </>
