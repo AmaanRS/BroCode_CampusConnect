@@ -26,6 +26,13 @@ function TeacherPage() {
   }, []);
 
   // console.log(token);
+
+  async function fetchAllComm() {
+    const res = await fetch();
+    const data = await res.json();
+    return data;
+  }
+
   async function postCommittee(cred) {
     const res = await fetch("http://localhost:8000/createCommittee", {
       method: "POST",

@@ -79,19 +79,18 @@ function SignupPage() {
 
   function handleSignup(e) {
     e.preventDefault();
-    // if (!email.includes("@vcet.edu.in")) {
-    //   setInputErrorEmail(true);
-    // }
-    if (password.length < 6 || confirmPass.length < 6) {
+    if (!email.includes("@vcet.edu.in")) {
+      setInputErrorEmail(true);
+    } else if (password.length < 6 || confirmPass.length < 6) {
       setPassError(true);
       setPassErrmsg("password length must be greater than 6");
-    }
-    if (password !== confirmPass) {
+    } else if (password !== confirmPass) {
       setPassError(true);
       setPassErrmsg("password does not match");
+    } else {
+      // console.log(email, password, confirmPass);
+      postData({ email, password });
     }
-    // console.log(email, password, confirmPass);
-    postData({ email, password });
   }
   return (
     <>

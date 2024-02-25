@@ -56,7 +56,11 @@ function LoginPage() {
     const data = await res.json();
     setAccmsg(data.message);
     setAccstatus(data.status);
-    if (data.status) {
+    if (data.status === "false") {
+      console.log("not active", data.status);
+      navigate("/profile");
+    }
+    if (data.status === "true") {
       console.log(data, "user is active");
       getUserType();
     }
@@ -76,7 +80,7 @@ function LoginPage() {
     console.log(message);
     if (success) {
       // console.log("success", email);
-      console.log(token);
+      // console.log(token);
       localStorage.setItem("token", token);
       localStorage.setItem("email", email);
 
