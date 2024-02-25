@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Logout from "../../components/Logout";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLoaderData } from "react-router-dom";
 
 function HodPage() {
   const [main, setMain] = useState("");
@@ -18,8 +18,13 @@ function HodPage() {
   const [evmsg, setEvmsg] = useState();
   const [commArr, setCommArr] = useState([]);
   const [request, setRequest] = useState([]);
-
   const navigate = useNavigate();
+  const loader = useLoaderData()
+
+  if(!loader){
+    navigate("/login",{replace:true})
+  }
+
   useEffect(() => {
     if (!token) {
       // console.log(token, "token");
@@ -503,6 +508,32 @@ function HodPage() {
       </>
     </>
   );
+}
+
+export const hodLoader =async ({request})=>{
+  try {
+    let token = localStorage.getItem("token")
+    const res = await fetch("http://localhost:8000/getUserData", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+
+    if(!data){
+      return false
+    }
+
+    return data.data.isHod
+
+    // return false
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+
 }
 
 export default HodPage;

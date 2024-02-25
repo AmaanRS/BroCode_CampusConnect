@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLoaderData } from "react-router-dom";
 import Logout from "../../components/Logout";
 
 function StudentPage() {
   const [main, setMain] = useState();
   const [commArr, setCommArr] = useState([]);
+  const loader = useLoaderData()
+
+  if(!loader){
+    navigate("/login",{replace:true})
+  }
 
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -36,7 +41,7 @@ function StudentPage() {
           aria-label="Sidebar"
         >
           <div className="h-full px-3 py-4 overflow-y-auto bg-gray-800 ">
-            <p className="text-white">Hod </p>
+            <p className="text-white">Student </p>
             <hr />
             <p className="text-white py-4">All Committee List</p>
             <ul className="space-y-2 font-medium">
@@ -164,6 +169,32 @@ function StudentPage() {
       </>
     </>
   );
+}
+
+export const studentLoader =async ({request})=>{
+  try {
+    let token = localStorage.getItem("token")
+    const res = await fetch("http://localhost:8000/getUserData", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+
+    if(!data){
+      return false
+    }
+
+    return data.data.isStudent
+
+    // return false
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+
 }
 
 export default StudentPage;
