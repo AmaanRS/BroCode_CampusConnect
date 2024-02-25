@@ -13,7 +13,8 @@ const {
     isAccountActive,
     getAllCommittees,
     fetchRequestOfUser,
-    getUserData
+    getUserData,
+    handleRequest
     } = require("../Controllers/UtilsController")
 
 const express = require("express")
@@ -30,6 +31,7 @@ Router.route("/getUserData").post(cookieChecker,getUserData)
 Router.route("/createUser").post(createUser)
 Router.route("/createCommittee").post(cookieChecker,createCommittee)
 Router.route("/createEvent").post(cookieChecker,createEvent)
+Router.route("/handleRequest").post(cookieChecker,handleRequest)
 
 
 module.exports = Router
