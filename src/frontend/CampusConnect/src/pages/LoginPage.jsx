@@ -14,8 +14,8 @@ function LoginPage() {
   const [userRole, setUserRole] = useState();
 
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
   async function getUserType() {
+    const token = await localStorage.getItem("token");
     const res = await fetch("http://localhost:8000/getUserData", {
       method: "POST",
       headers: {
@@ -27,21 +27,21 @@ function LoginPage() {
     if (data.data) {
       const { isAdmin, isHod, isPrincipal, isStudent, isTeacher } = data.data;
       console.log(isAdmin, isHod, isPrincipal, isStudent, isTeacher);
-      // if (isAdmin) {
-      //   navigate("/admin");
-      // }
-      // if (isHod) {
-      //   navigate("/hod");
-      // }
-      // if (isPrincipal) {
-      //   navigate("/principal");
-      // }
-      // if (isStudent) {
-      //   navigate("/student");
-      // }
-      // if (isTeacher) {
-      //   navigate("/teacher");
-      // }
+      if (isAdmin) {
+        navigate("/admin");
+      }
+      if (isHod) {
+        navigate("/hod");
+      }
+      if (isPrincipal) {
+        navigate("/principal");
+      }
+      if (isStudent) {
+        navigate("/student");
+      }
+      if (isTeacher) {
+        navigate("/teacher");
+      }
     }
     return data;
   }
