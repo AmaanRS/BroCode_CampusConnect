@@ -9,7 +9,25 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState();
+  const [accmsg, setAccmsg] = useState();
+  const [accstatus, setAccstatus] = useState();
   const navigate = useNavigate();
+
+  async function isAccActive(cred) {
+    const res = await fetch("http://localhost:8000/isAccountActive", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cred),
+    });
+    const data = await res.json();
+    setAccmsg(data.message);
+    setAccstatus(data.status);
+    console.log(data);
+    return data;
+  }
+
   async function handleLogin(cred) {
     const res = await fetch("http://localhost:8000/login", {
       method: "POST",
@@ -23,7 +41,7 @@ function LoginPage() {
     if (success) {
       // console.log("success", email);
       localStorage.setItem("email", email);
-      navigate("/profile");
+      isAccActive({ email });
     }
     return message;
   }
@@ -103,6 +121,7 @@ function LoginPage() {
             </Link>
           </p>
           {msg && <p> {msg} </p>}
+          {accmsg && <p> {accmsg} </p>}
         </motion.form>
       </div>
     </>

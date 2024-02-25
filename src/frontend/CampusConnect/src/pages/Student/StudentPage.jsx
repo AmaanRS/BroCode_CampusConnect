@@ -1,7 +1,15 @@
 import { useState } from "react";
 
-function AdminPage() {
+function StudentPage() {
   const [main, setMain] = useState();
+  async function fetchCommittee() {
+    const res = await fetch("http://localhost:8000/getAllCommittees", {
+      method: "POST",
+    });
+    const data = await res.json();
+    console.log(data);
+  }
+
   return (
     <>
       {/* sidebar frag  */}
@@ -25,11 +33,12 @@ function AdminPage() {
               <li>
                 <button
                   onClick={() => {
-                    setMain("getAllReq");
+                    setMain("getCommittee");
+                    fetchCommittee();
                   }}
                   className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                 >
-                  <span className="ms-3">All Request</span>
+                  <span className="ms-3">All Committees</span>
                 </button>
               </li>
               <li>
@@ -181,73 +190,72 @@ function AdminPage() {
       <>
         <div className="p-4 sm:ml-64">
           <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-            {!main && <p>Please choose an option from sidebar</p>}
-
-            {main === "getAllReq" && (
+            {!main && <p>Nothing selected</p>}
+            {main === "getCommittee" && (
               <div className="leading-loose">
-                <form className="max-w-xl m-4 p-10 bg-white rounded shadow-xl">
-                  <p className="text-gray-800 font-medium">User information</p>
-                  <div className="">
-                    <label
-                      className="block text-sm text-gray-00"
-                      htmlFor="cus_name"
+                {/* card */}
+                <div className=" inline-block max-w-sm m-2 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                  <a href="#">
+                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                      commitee name
+                    </h5>
+                  </a>
+                  <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                    commitee dec
+                  </p>
+                  <a
+                    href="#"
+                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    Read more
+                    <svg
+                      className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 14 10"
                     >
-                      Name
-                    </label>
-                    <input
-                      className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                      id="cus_name"
-                      name="cus_name"
-                      type="text"
-                      required=""
-                      placeholder="Your Name"
-                      aria-label="Name"
-                    />
-                  </div>
-
-                  <label
-                    htmlFor="countries"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M1 5h12m0 0L9 1m4 4L9 9"
+                      />
+                    </svg>
+                  </a>
+                </div>
+                <div className=" inline-block max-w-sm m-2 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                  <a href="#">
+                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                      commitee name
+                    </h5>
+                  </a>
+                  <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                    commitee dec
+                  </p>
+                  <a
+                    href="#"
+                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
-                    Select a Role
-                  </label>
-                  <select
-                    id="role"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  >
-                    <option selected="">Choose a role</option>
-                    <option value="">Student</option>
-                    <option value="">Principal</option>
-                    <option value="">Hod</option>
-                    <option value="">Admin</option>
-                  </select>
-                  <br />
-                  <label
-                    htmlFor="countries"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Select your Department
-                  </label>
-                  <select
-                    id="department"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  >
-                    <option selected="">Choose a DEPT</option>
-                    <option value="">IT</option>
-                    <option value="">COMPS</option>
-                    <option value="">EXTC</option>
-                    <option value="">CIVIL</option>
-                  </select>
-
-                  <div className="mt-4">
-                    <button
-                      className="px-4 py-1 text-white font-light tracking-wider bg-gray-900 rounded"
-                      type="submit"
+                    Read more
+                    <svg
+                      className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 14 10"
                     >
-                      UPDATE
-                    </button>
-                  </div>
-                </form>
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M1 5h12m0 0L9 1m4 4L9 9"
+                      />
+                    </svg>
+                  </a>
+                </div>
               </div>
             )}
           </div>
@@ -257,4 +265,4 @@ function AdminPage() {
   );
 }
 
-export default AdminPage;
+export default StudentPage;
