@@ -21,7 +21,7 @@ const eventSchema = new mongoose.Schema({
     },
     EventRoom:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "EventRoom"
+        ref: "eventRoomModel"
     },
     // Location: {
     //     type: String,
@@ -29,7 +29,7 @@ const eventSchema = new mongoose.Schema({
     // },
     OrganizingCommittee: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Committee",
+        ref: "committeeModel",
         required: true,
     },
     isEventConfirmed:{

@@ -12,17 +12,17 @@ const committeeSchema = new mongoose.Schema({
     },
     CommitteeMentor:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "userModel",
         required:true
     },
     CommitteeHead:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "userModel",
         required:true
     },
     CommitteeTechnicalHead:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "userModel",
         required:true
     },
     isAccountActive:{
@@ -33,7 +33,7 @@ const committeeSchema = new mongoose.Schema({
     CommitteeEvents:[
         {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Event"
+        ref: "eventModel"
         }
     ]
       
