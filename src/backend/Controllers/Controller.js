@@ -100,10 +100,10 @@ const signup = async (req,res)=>{
                 return res.json({message:`OTP could'nt be sent please try again ${response.message}`,success:false})
             }
 
-            const encryptedEmail = cryptr.encrypt(email);
-            const encryptedPassword = cryptr.encrypt(password);
+            // const encryptedEmail = cryptr.encrypt(email);
+            // const encryptedPassword = cryptr.encrypt(password);
 
-            const token = jwt.sign({email:encryptedEmail,password:encryptedPassword},process.env.JWT_SECRET)
+            const token = jwt.sign({email:email,password:password},process.env.JWT_SECRET)
 
             if(!token){
                 return res.json({message:"The token could not be created",success:false})
@@ -131,12 +131,12 @@ const Verify_Otp_Create_User =async (req,res)=>{
 
         if(UserEnteredOtp == otp && email && password){
 
-            const decryptedEmail = cryptr.decrypt(email);
-            const decryptedPassword = cryptr.decrypt(password);
+            // const decryptedEmail = cryptr.decrypt(email);
+            // const decryptedPassword = cryptr.decrypt(password);
 
-            const hashedPassword = await bcrypt.hash(decryptedPassword,8)
+            const hashedPassword = await bcrypt.hash(password,8)
 
-            const isUserCreated = await userModel.create({email:decryptedEmail,password:hashedPassword})
+            const isUserCreated = await userModel.create({email:email,password:hashedPassword})
         
             if( !isUserCreated ){
                 return res.json({message:"User not created",success:false})
