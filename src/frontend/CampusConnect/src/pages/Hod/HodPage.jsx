@@ -21,9 +21,12 @@ function HodPage() {
   const navigate = useNavigate();
   const loader = useLoaderData()
 
-  if(!loader){
-    navigate("/login",{replace:true})
-  }
+  
+  useEffect(()=>{
+    if(!loader){
+      navigate("/login",{replace:true})
+    }
+  },[loader])
 
   useEffect(() => {
     if (!token) {

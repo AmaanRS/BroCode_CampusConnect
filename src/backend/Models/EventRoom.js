@@ -21,6 +21,7 @@ const eventRoomSchema = new mongoose.Schema({
     isEventRoomBooked:{
         type:String,
         enum:["true","false","pending"],
+        default:"false"
     }
 })
 

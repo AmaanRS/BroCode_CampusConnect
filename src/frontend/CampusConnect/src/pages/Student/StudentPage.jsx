@@ -5,14 +5,16 @@ import Logout from "../../components/Logout";
 function StudentPage() {
   const [main, setMain] = useState();
   const [commArr, setCommArr] = useState([]);
+  const navigate = useNavigate();
   const loader = useLoaderData()
 
-  if(!loader){
-    navigate("/login",{replace:true})
-  }
+  useEffect(()=>{
+    if(!loader){
+      navigate("/login",{replace:true})
+    }
+  },[loader])
 
   const token = localStorage.getItem("token");
-  const navigate = useNavigate();
   useEffect(() => {
     if (!token) {
       console.log(token, "token");

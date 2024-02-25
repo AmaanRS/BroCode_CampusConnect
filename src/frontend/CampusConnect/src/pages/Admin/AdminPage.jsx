@@ -8,9 +8,11 @@ function AdminPage() {
   const [requestdata, setRequestdata] = useState([]);
   const loader = useLoaderData()
 
-  if(!loader){
-    navigate("/login",{replace:true})
-  }
+  useEffect(()=>{
+    if(!loader){
+      return navigate("/login",{replace:true})
+    }
+  },[loader])
 
   const token = localStorage.getItem("token");
   useEffect(() => {
