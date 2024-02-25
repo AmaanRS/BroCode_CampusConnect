@@ -119,7 +119,7 @@ function AdminPage() {
                 <p>fetching all user Request</p>
                 {requestdata.map((item) => {
                   console.log(item.RequestContent);
-                  if (item.RequestContent.RequestStatus === "pending") {
+                  if (true) {
                     return (
                       <div
                         className="my-3 p-3 rounded-md bg-slate-200"
