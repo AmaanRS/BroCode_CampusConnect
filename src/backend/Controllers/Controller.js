@@ -122,11 +122,11 @@ const signup = async (req, res) => {
         });
       }
 
-      const encryptedEmail = cryptr.encrypt(email);
-      const encryptedPassword = cryptr.encrypt(password);
+      // const encryptedEmail = cryptr.encrypt(email);
+      // const encryptedPassword = cryptr.encrypt(password);
 
       const token = jwt.sign(
-        { email: encryptedEmail, password: encryptedPassword },
+        { email: email, password: password },
         process.env.JWT_SECRET
       );
 
@@ -166,13 +166,13 @@ const Verify_Otp_Create_User = async (req, res) => {
     const { email, password } = req.middlewareRes.decodedToken;
 
     if (UserEnteredOtp == otp && email && password) {
-      const decryptedEmail = cryptr.decrypt(email);
-      const decryptedPassword = cryptr.decrypt(password);
+      // const decryptedEmail = cryptr.decrypt(email);
+      // const decryptedPassword = cryptr.decrypt(password);
 
-      const hashedPassword = await bcrypt.hash(decryptedPassword, 8);
+      const hashedPassword = await bcrypt.hash(password, 8);
 
       const isUserCreated = await userModel.create({
-        email: decryptedEmail,
+        email: email,
         password: hashedPassword,
       });
 

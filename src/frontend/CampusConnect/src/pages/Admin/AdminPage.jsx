@@ -2,6 +2,22 @@ import { useState } from "react";
 
 function AdminPage() {
   const [main, setMain] = useState();
+  const token = localStorage.getItem("token");
+  console.log(token);
+
+  async function fetchRequest() {
+    const res = await fetch("http://localhost:8000/fetchRequestOfUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+    console.log(data);
+    return data;
+  }
+
   return (
     <>
       {/* sidebar frag  */}
@@ -26,6 +42,7 @@ function AdminPage() {
                 <button
                   onClick={() => {
                     setMain("getAllReq");
+                    fetchRequest();
                   }}
                   className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                 >
