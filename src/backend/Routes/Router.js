@@ -14,6 +14,7 @@ const {
   isAccountActive,
   getAllCommittees,
   fetchRequestOfUser,
+  getUserData,
 } = require("../Controllers/UtilsController");
 
 const express = require("express");
@@ -29,6 +30,7 @@ Router.route("/Verify_Otp_Create_User").post(
   cookieChecker,
   Verify_Otp_Create_User
 );
+Router.route("/getUserData").post(cookieChecker, getUserData);
 Router.route("/createUser").post(createUser);
 Router.route("/createCommittee").post(cookieChecker, createCommittee);
 Router.route("/createEvent").post(cookieChecker, createEvent);
