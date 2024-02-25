@@ -11,7 +11,6 @@ function LoginPage() {
   const [msg, setMsg] = useState();
   const [accmsg, setAccmsg] = useState();
   const [accstatus, setAccstatus] = useState();
-  const [userRole, setUserRole] = useState();
 
   const navigate = useNavigate();
   async function getUserType() {

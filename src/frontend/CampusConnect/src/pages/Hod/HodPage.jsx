@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logout from "../../components/Logout";
+import { useNavigate } from "react-router-dom";
 
 function HodPage() {
   const [main, setMain] = useState("");
@@ -7,8 +8,17 @@ function HodPage() {
   const [commDesc, setCommDesc] = useState("");
   const [commHeadMail, setCommHeadMail] = useState("");
   const [commTechMail, setCommTechMail] = useState("");
+
   const token = localStorage.getItem("token");
-  // console.log(token);
+  console.log("token");
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!token) {
+      console.log(token, "token");
+      navigate("/login");
+    }
+  }, []);
+
   async function postCommittee(cred) {
     const res = await fetch("http://localhost:8000/createCommittee", {
       method: "POST",

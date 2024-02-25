@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logout from "../../components/Logout";
+import { useNavigate } from "react-router-dom";
 
 function AdminPage() {
+  const navigate = useNavigate();
   const [main, setMain] = useState();
-  const token = localStorage.getItem("token");
   const [requestdata, setRequestdata] = useState([]);
+
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (!token) {
+      console.log(token, "token");
+      navigate("/login");
+    }
+  }, []);
 
   async function fetchRequest() {
     const res = await fetch("http://localhost:8000/fetchRequestOfUser", {

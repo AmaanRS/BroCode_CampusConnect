@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function StudentPage() {
   const [main, setMain] = useState();
@@ -9,6 +10,15 @@ function StudentPage() {
     const data = await res.json();
     console.log(data);
   }
+
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!token) {
+      console.log(token, "token");
+      navigate("/login");
+    }
+  }, []);
 
   return (
     <>

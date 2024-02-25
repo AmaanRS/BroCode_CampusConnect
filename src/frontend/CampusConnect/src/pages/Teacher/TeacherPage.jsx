@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Logout from "../../components/Logout";
+import { useNavigate } from "react-router-dom";
 
 function TeacherPage() {
   const [main, setMain] = useState("");
@@ -16,8 +17,12 @@ function TeacherPage() {
   const [commmsg, setCommmsg] = useState();
   const [evmsg, setEvmsg] = useState();
 
-  useEffect(function () {
-    console.log("executed");
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!token) {
+      console.log(token, "token");
+      navigate("/login");
+    }
   }, []);
 
   // console.log(token);

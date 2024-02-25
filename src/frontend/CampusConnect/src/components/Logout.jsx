@@ -2,7 +2,11 @@ import { useNavigate } from "react-router-dom";
 
 export default function Logout() {
   const navigate = useNavigate();
+  async function clearLocal() {
+    await localStorage.clear();
+  }
   function handleClick() {
+    clearLocal();
     navigate("/login");
   }
 
