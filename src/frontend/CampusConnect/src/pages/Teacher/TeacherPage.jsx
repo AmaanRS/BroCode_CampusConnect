@@ -114,6 +114,7 @@ function TeacherPage() {
       body: JSON.stringify(cred),
     });
     const data = await res.json();
+    console.log(data);
     setEvmsg(data.message);
     return data;
   }
@@ -130,7 +131,7 @@ function TeacherPage() {
 
   function handleSubmitEvent(e) {
     e.preventDefault();
-    // console.log(evName, evDesc, evDate, evTimeSlt, evRm);
+    console.log(evName, evDesc, evDate, evTimeSlt, evRm);
     postEvent({
       EventName: evName,
       EventDescription: evDesc,
@@ -501,11 +502,16 @@ function TeacherPage() {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   >
                     <option selected="">Choose a slot</option>
-                    <option value="R1"> 9 am to 11 am</option>
-                    <option value="R2">11:15 2</option>
-                    <option value="R3">Room 3</option>
-                    <option value="R4">Room 4</option>
-                    <option value="R5">Room 5</option>
+                    <option value="9 am to 11 am"> 9 am to 11 am</option>
+                    <option value="11:15 am to 1:15 pm">
+                      11:15 am to 1:15 pm{" "}
+                    </option>
+                    <option value="1:30 pm to 3:30 pm">
+                      1:30 pm to 3:30 pm
+                    </option>
+                    <option value="3:45 pm to 5:45 pm">
+                      3:45 pm to 5:45 pm
+                    </option>
                   </select>
 
                   <br />
@@ -523,11 +529,20 @@ function TeacherPage() {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   >
                     <option selected="">Choose a Room</option>
-                    <option value="R1">Room 1</option>
-                    <option value="R2">Room 2</option>
-                    <option value="R3">Room 3</option>
-                    <option value="R4">Room 4</option>
-                    <option value="R5">Room 5</option>
+                    <option value="Ground Floor Seminar Hall">
+                      Ground Floor Seminar Hall
+                    </option>
+                    <option value="College Ground">College Ground</option>
+                    <option value="Tower A Seminar Hall">
+                      Tower A Seminar Hall
+                    </option>
+                    <option value="Tower B Seminar Hall">
+                      {" "}
+                      Tower B Seminar Hall{" "}
+                    </option>
+                    <option value="First Floor Seminar Hall">
+                      First Floor Seminar Hall
+                    </option>
                   </select>
 
                   <div className="mt-4">
