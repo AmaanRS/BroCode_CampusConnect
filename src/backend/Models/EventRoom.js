@@ -6,23 +6,23 @@ const mongoose = require("mongoose");
 //eg Room1 Slot3
 //eg Room2 Slot1 and so on
 const eventRoomSchema = new mongoose.Schema({
-  EventRoomName: {
-    type: String,
-    required: true,
-  },
-  EventRoomEventNow: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Event",
-  },
-  EventRoomEventTimeSlot: {
-    type: String,
-    enum: ["Slot1", "Slot2", "Slot3"],
-  },
-  isEventRoomBooked: {
-    type: String,
-    enum: ["true", "false", "pending"],
-    default: "false",
-  },
-});
+    EventRoomName:{
+        type:String,
+        required:true
+    },
+    EventRoomEventNow:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Event"
+    },
+    EventRoomEventTimeSlot:{
+        type:String,
+        enum:["Slot1","Slot2","Slot3"]
+    },
+    isEventRoomBooked:{
+        type:String,
+        enum:["true","false","pending"],
+        default:"false"
+    }
+})
 
 module.exports = mongoose.model("eventRoomModel", eventRoomSchema);

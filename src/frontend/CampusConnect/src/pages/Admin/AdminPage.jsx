@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
 import Logout from "../../components/Logout";
-import { useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 function AdminPage() {
   const navigate = useNavigate();
   const [main, setMain] = useState();
   const [requestdata, setRequestdata] = useState([]);
+  const loader = useLoaderData()
+
+  useEffect(()=>{
+    if(!loader){
+      return navigate("/login",{replace:true})
+    }
+  },[loader])
 
   const token = localStorage.getItem("token");
   useEffect(() => {
@@ -172,6 +179,31 @@ function AdminPage() {
       </>
     </>
   );
+}
+
+export const adminLoader =async ({request})=>{
+  try {
+    let token = localStorage.getItem("token")
+    const res = await fetch("http://localhost:8000/getUserData", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+
+    if(!data){
+      return false
+    }
+
+    return data.data.isAdmin
+
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+
 }
 
 export default AdminPage;
