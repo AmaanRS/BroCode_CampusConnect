@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Logout from "../../components/Logout";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLoaderData } from "react-router-dom";
 
 function Principal() {
   const [main, setMain] = useState("");
@@ -20,6 +20,14 @@ function Principal() {
   const [request, setRequest] = useState([]);
 
   const navigate = useNavigate();
+  const loader = useLoaderData()
+
+  useEffect(()=>{
+    if(!loader){
+      navigate("/login",{replace:true})
+    }
+  },[loader])
+
   useEffect(() => {
     if (!token) {
       // console.log(token, "token");
@@ -551,6 +559,31 @@ function Principal() {
       </>
     </>
   );
+}
+
+export const principalLoader =async ({request})=>{
+  try {
+    let token = localStorage.getItem("token")
+    const res = await fetch("http://localhost:8000/getUserData", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+
+    if(!data){
+      return false
+    }
+
+    return data.data.isPrincipal
+    
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+
 }
 
 export default Principal;

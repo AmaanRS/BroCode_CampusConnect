@@ -10,7 +10,7 @@ const cryptr = new Cryptr(`${process.env.ENCRYPTION_KEY}`, {
 
 var otp;
 const Generate_Otp = () => {
-  otp = Math.floor(Math.random() * 1000000);
+  otp = 123456
 };
 
 const login = async (req, res) => {

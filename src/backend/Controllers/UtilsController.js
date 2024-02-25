@@ -151,7 +151,6 @@ const getUserData = async (req, res) => {
 const handleRequest = async (req,res)=>{
 
     try {
-
         const { status,requestId } = req.body
 
         if (!req.middlewareRes.success) {

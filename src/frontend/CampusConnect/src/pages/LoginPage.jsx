@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useLoaderData } from "react-router-dom";
 import avatarsvg from "../assets/Signinpage/avatar.svg";
 import unlocksvg from "../assets/Signinpage/unlock.svg";
 import wavepng from "../assets/Signinpage/wave.png";
@@ -13,6 +13,13 @@ function LoginPage() {
   const [accstatus, setAccstatus] = useState();
 
   const navigate = useNavigate();
+  const loader = useLoaderData()
+
+  // if(!loader){
+  //   return navigate()
+  // }
+
+
   async function getUserType() {
     const token = await localStorage.getItem("token");
     const res = await fetch("http://localhost:8000/getUserData", {
@@ -176,6 +183,21 @@ function LoginPage() {
       </div>
     </>
   );
+}
+
+export const loginLoader = ({request})=>{
+  try {
+    let token = localStorage.getItem("token")
+    let email = localStorage.getItem("email")
+    if(token && email){
+      return false
+    }
+    return true
+    
+  } catch (error) {
+    console.log(error)
+    return false
+  }
 }
 
 export default LoginPage;
