@@ -82,14 +82,25 @@ const fetchRequestOfUser = async (req, res) => {
             } else if (e.RequestEvent) {
                 populatedField = await userModel.populate(e, {
                     path: 'RequestEvent',
-                    populate:[{path:"OrganizingCommittee",populate:["CommitteeMentor", "CommitteeHead", "CommitteeTechnicalHead"]}, "EventRoom"]
-                    
+                    populate:
+                    [
+                        {
+                        path:"OrganizingCommittee",
+                        populate:
+                            [
+                                "CommitteeMentor", "CommitteeHead", "CommitteeTechnicalHead"
+                            ]
+                        },
+                    "EventRoom"]
                 });
         
             } else if (e.RequestCommittee) {
                 populatedField = await userModel.populate(e, {
                     path: 'RequestCommittee',
-                    populate: ["CommitteeMentor", "CommitteeHead", "CommitteeTechnicalHead"]
+                    populate: 
+                    [
+                        "CommitteeMentor", "CommitteeHead", "CommitteeTechnicalHead"
+                    ]
                 });
             }
         
