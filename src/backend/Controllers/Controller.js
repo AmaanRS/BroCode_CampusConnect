@@ -62,40 +62,12 @@ const login = async (req, res) => {
         token: token,
       });
     }
-}
-
-const signup = async (req,res)=>{
-    try {
-        const { email, password } = req.body;
-
-        if( email && password ){
-
-            const response = await Nodemailer_Message(email)
-
-            if(!response || !response.success){
-                return res.json({message:`OTP could'nt be sent please try again ${response.message}`,success:false})
-            }
-
-            // const encryptedEmail = cryptr.encrypt(email);
-            // const encryptedPassword = cryptr.encrypt(password);
-
-            const token = jwt.sign({email:email,password:password},process.env.JWT_SECRET)
-
-            if(!token){
-                return res.json({message:"The token could not be created",success:false})
-            }
-
-            return res.json({message:`${response.message}`,success:response.success,token:token})
-
-        }else{
-            return res.json({message:"Enter both email and password",success:false})
-        }
-    } catch (e) {
-        //Logging the error
-        console.log(e.message)
-
-        //Send the message to the frontend that the user's account is not created
-        return res.json({message:"There is some problem in signning up",success:false})
+    //If either email or password does not exist
+    else {
+      return res.json({
+        message: "Either email or password is missing",
+        success: false,
+      });
     }
   } catch (e) {
     console.log("There is some error in login controller");
@@ -111,16 +83,37 @@ const signup = async (req,res)=>{
   }
 };
 
-            // const decryptedEmail = cryptr.decrypt(email);
-            // const decryptedPassword = cryptr.decrypt(password);
+const Nodemailer_Message = async (email) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.SENDER_EMAIL,
+        pass: process.env.APP_PASSWORD,
+      },
+    });
+    Generate_Otp();
+    const info = await transporter.sendMail({
+      from: process.env.SENDER_EMAIL, // sender address
+      to: `${email}`, // list of receivers
+      subject: "OTP for CampusConnect Email", // Subject line
+      text: `Here is Your OTP for Verifying your CampusConnect Email ${otp}`,
+    });
+    return { message: "OTP sent Successfully", success: true };
+  } catch (error) {
+    console.log(error);
+    return { message: error.message, success: false };
+  }
+};
 
-            const hashedPassword = await bcrypt.hash(password,8)
+const signup = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-            const isUserCreated = await userModel.create({email:email,password:hashedPassword})
-        
-            if( !isUserCreated ){
-                return res.json({message:"User not created",success:false})
-            }
+    if (email && password) {
+      const response = await Nodemailer_Message(email);
 
       if (!response || !response.success) {
         return res.json({
