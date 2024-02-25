@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState,useRef } from "react";
+import { redirect, useLoaderData, useNavigate } from "react-router-dom";
 
 export default function ProfilePage() {
   const email = localStorage.getItem("email");
@@ -11,6 +12,11 @@ export default function ProfilePage() {
   const [isTeacher, setIsTeacher] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [msg, setMsg] = useState();
+  const navigate = useNavigate()
+  const loader = useLoaderData()
+  if(loader == false){
+    navigate("/login",{replace:true})
+  }
 
   async function postProfile(cred) {
     const res = await fetch("http://localhost:8000/createUser", {
@@ -20,68 +26,62 @@ export default function ProfilePage() {
       },
       body: JSON.stringify(cred),
     });
-    const data = await res.json(cred);
-
+    const data = await res.json();
     console.log(data);
+
+    if(data.success){
+      if(isStudent){
+        return navigate("/student",{replace:true})
+
+      }else if(isAdmin){
+        return navigate("/admin",{replace:true})
+
+      }else if(isHod){
+        // return navigate("/hod",{replace:true})
+
+      }else if(isPrincipal){
+        // return navigate("principal",{replace:true})
+
+      }else if(isTeacher){
+        // return navigate("/teacher",{replace:true})
+      }
+    }
     setMsg(data.message);
-    return data;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     console.log("clicked");
     switch (role) {
       case "student":
         setIsStudent(true);
-        setIsTeacher(false);
-        setIsHod(false);
-        setIsAdmin(false);
-        setIsPrincipal(false);
 
         break;
       case "teacher":
-        setIsStudent(false);
         setIsTeacher(true);
-        setIsHod(false);
-        setIsAdmin(false);
-        setIsPrincipal(false);
+
         break;
       case "hod":
-        setIsStudent(false);
-        setIsTeacher(false);
         setIsHod(true);
-        setIsAdmin(false);
-        setIsPrincipal(false);
+
         break;
       case "admin":
-        setIsStudent(false);
-        setIsTeacher(false);
-        setIsHod(false);
         setIsAdmin(true);
-        setIsPrincipal(false);
+
         break;
       case "principal":
-        setIsStudent(false);
-        setIsTeacher(false);
-        setIsHod(false);
-        setIsAdmin(false);
         setIsPrincipal(true);
-        break;
 
+        break;
       default:
         break;
     }
-    console.log(
-      email,
-      username,
-      department,
-      isStudent,
-      isTeacher,
-      isHod,
-      isAdmin,
-      isPrincipal
-    );
-    const data = postProfile({
+}
+
+useEffect(()=>{
+  if(isStudent || isTeacher || isHod || isAdmin || isPrincipal)
+  {
+    postProfile({
       email,
       username,
       department,
@@ -91,9 +91,8 @@ export default function ProfilePage() {
       isAdmin,
       isPrincipal,
     });
-    console.log(data);
-    setMsg(data.message);
   }
+},[isStudent,isTeacher,isHod,isAdmin,isPrincipal])
 
   return (
     <section className="h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
@@ -182,4 +181,26 @@ export default function ProfilePage() {
       </div>
     </section>
   );
+}
+
+
+export const profileLoader =async({request})=>{
+  let email = localStorage.getItem("email")
+  const res = await fetch("http://localhost:8000/isAccountActive", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({email:email}),
+    });
+
+  if(!res){
+    return false
+  }
+  const data = await res.json();
+
+  if(data.status == "false"){
+    return true
+  }
+  return false
 }
