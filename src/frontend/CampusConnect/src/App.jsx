@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
 import MasterLayout from "./pages/MasterLayout";
 import ProfilePage from "./pages/ProfilePage";
+import {profileLoader } from "./pages/ProfilePage";
 import AdminPage from "./pages/Admin/AdminPage";
 import TeacherPage from "./pages/Teacher/TeacherPage";
 import HodPage from "./pages/Hod/HodPage";
@@ -30,6 +31,7 @@ function App() {
     },
     {
       path: "/profile",
+      loader:profileLoader,
       element: <ProfilePage />,
     },
     {
