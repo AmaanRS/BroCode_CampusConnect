@@ -420,7 +420,7 @@ const createEvent = async (req, res) => {
       });
     }
 
-    const email = req.middlewareRes.decodedToken;
+    const email = req.middlewareRes.decodedToken.email;
 
     if (!email) {
       return res.json({
@@ -457,7 +457,7 @@ const createEvent = async (req, res) => {
 
     if (!room) {
       return res.json({
-        message: "This room cannot be booked",
+        message: "This room has been booked",
         success: false,
       });
     }

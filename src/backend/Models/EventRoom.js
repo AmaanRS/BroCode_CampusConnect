@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 //Since there are 3 rooms and 3 timeslots there will be 9 combinations for booking
 //eg Room1 Slot1
@@ -25,4 +25,4 @@ const eventRoomSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model("eventRoomModel",eventRoomSchema)
+module.exports = mongoose.model("eventRoomModel", eventRoomSchema);
