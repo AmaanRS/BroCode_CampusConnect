@@ -124,7 +124,7 @@ function TeacherPage() {
           aria-label="Sidebar"
         >
           <div className="h-full px-3 py-4 overflow-y-auto bg-gray-800 ">
-            <p className="text-white">TeacherPage</p>
+            <p className="text-white">Teacher </p>
             <hr />
             <p className="text-white py-4">All Committee List</p>
             <ul className="space-y-2 font-medium">

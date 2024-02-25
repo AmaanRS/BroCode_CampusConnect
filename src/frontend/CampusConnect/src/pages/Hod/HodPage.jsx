@@ -124,7 +124,7 @@ function HodPage() {
           aria-label="Sidebar"
         >
           <div className="h-full px-3 py-4 overflow-y-auto bg-gray-800 ">
-            <p className="text-white">HodPage</p>
+            <p className="text-white">Hod </p>
             <hr />
             <p className="text-white py-4">All Committee List</p>
             <ul className="space-y-2 font-medium">

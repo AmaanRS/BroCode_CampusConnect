@@ -1,5 +1,5 @@
-import { useEffect, useState,useRef } from "react";
-import { redirect, useLoaderData, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 export default function ProfilePage() {
   const email = localStorage.getItem("email");
@@ -12,10 +12,10 @@ export default function ProfilePage() {
   const [isTeacher, setIsTeacher] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [msg, setMsg] = useState();
-  const navigate = useNavigate()
-  const loader = useLoaderData()
-  if(loader == false){
-    navigate("/login",{replace:true})
+  const navigate = useNavigate();
+  const loader = useLoaderData();
+  if (loader == false) {
+    navigate("/login", { replace: true });
   }
 
   async function postProfile(cred) {
@@ -29,20 +29,16 @@ export default function ProfilePage() {
     const data = await res.json();
     console.log(data);
 
-    if(data.success){
-      if(isStudent){
-        return navigate("/student",{replace:true})
-
-      }else if(isAdmin){
-        return navigate("/admin",{replace:true})
-
-      }else if(isHod){
+    if (data.success) {
+      if (isStudent) {
+        return navigate("/student", { replace: true });
+      } else if (isAdmin) {
+        return navigate("/admin", { replace: true });
+      } else if (isHod) {
         // return navigate("/hod",{replace:true})
-
-      }else if(isPrincipal){
+      } else if (isPrincipal) {
         // return navigate("principal",{replace:true})
-
-      }else if(isTeacher){
+      } else if (isTeacher) {
         // return navigate("/teacher",{replace:true})
       }
     }
@@ -76,23 +72,22 @@ export default function ProfilePage() {
       default:
         break;
     }
-}
-
-useEffect(()=>{
-  if(isStudent || isTeacher || isHod || isAdmin || isPrincipal)
-  {
-    postProfile({
-      email,
-      username,
-      department,
-      isStudent,
-      isTeacher,
-      isHod,
-      isAdmin,
-      isPrincipal,
-    });
   }
-},[isStudent,isTeacher,isHod,isAdmin,isPrincipal])
+
+  useEffect(() => {
+    if (isStudent || isTeacher || isHod || isAdmin || isPrincipal) {
+      postProfile({
+        email,
+        username,
+        department,
+        isStudent,
+        isTeacher,
+        isHod,
+        isAdmin,
+        isPrincipal,
+      });
+    }
+  }, [isStudent, isTeacher, isHod, isAdmin, isPrincipal]);
 
   return (
     <section className="h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
@@ -183,24 +178,23 @@ useEffect(()=>{
   );
 }
 
-
-export const profileLoader =async({request})=>{
-  let email = localStorage.getItem("email")
+export const profileLoader = async ({ request }) => {
+  let email = localStorage.getItem("email");
   const res = await fetch("http://localhost:8000/isAccountActive", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({email:email}),
-    });
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email: email }),
+  });
 
-  if(!res){
-    return false
+  if (!res) {
+    return false;
   }
   const data = await res.json();
 
-  if(data.status == "false"){
-    return true
+  if (data.status == "false") {
+    return true;
   }
-  return false
-}
+  return false;
+};
