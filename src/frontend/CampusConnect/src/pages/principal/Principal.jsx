@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Logout from "../../components/Logout";
 import { useNavigate } from "react-router-dom";
 
-function TeacherPage() {
+function Principal() {
   const [main, setMain] = useState("");
   const [commName, setCommName] = useState("");
   const [commDesc, setCommDesc] = useState("");
@@ -124,7 +124,7 @@ function TeacherPage() {
           aria-label="Sidebar"
         >
           <div className="h-full px-3 py-4 overflow-y-auto bg-gray-800 ">
-            <p className="text-white">TeacherPage</p>
+            <p className="text-white">Principal</p>
             <hr />
             <p className="text-white py-4">All Committee List</p>
             <ul className="space-y-2 font-medium">
@@ -505,4 +505,4 @@ function TeacherPage() {
   );
 }
 
-export default TeacherPage;
+export default Principal;

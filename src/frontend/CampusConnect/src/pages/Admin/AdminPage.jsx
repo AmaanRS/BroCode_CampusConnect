@@ -25,10 +25,10 @@ function AdminPage() {
     });
     const data = await res.json();
 
+    console.log(data);
     if (data.success) {
       setRequestdata(data.data);
     }
-    console.log(data);
 
     return data;
   }

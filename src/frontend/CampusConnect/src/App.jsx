@@ -10,6 +10,7 @@ import AdminPage from "./pages/Admin/AdminPage";
 import TeacherPage from "./pages/Teacher/TeacherPage";
 import HodPage from "./pages/Hod/HodPage";
 import StudentPage from "./pages/Student/StudentPage";
+import Principal from "./pages/principal/Principal";
 // import UserContextProvider from "./store/UserContextProvider";
 
 function App() {
@@ -47,6 +48,10 @@ function App() {
     {
       path: "/student",
       element: <StudentPage />,
+    },
+    {
+      path: "/principal",
+      element: <Principal />,
     },
   ]);
   const queryClient = new QueryClient();
