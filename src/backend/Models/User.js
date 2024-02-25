@@ -42,6 +42,7 @@ const userModel = new mongoose.Schema({
         enum:["true","false","pending"],
         default:false
     },
+    //Is not needed but kept for now
     Requests:[
         {
         type: mongoose.Schema.Types.ObjectId,
