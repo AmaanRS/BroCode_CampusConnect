@@ -18,18 +18,35 @@ function TeacherPage() {
   const [evmsg, setEvmsg] = useState();
   const [commArr, setCommArr] = useState([]);
   const [request, setRequest] = useState([]);
+  const [mentorid, setMentorId] = useState([]);
+  const [doesMentorHasComm, setDoesMentorHasComm] = useState();
 
   const navigate = useNavigate();
   useEffect(() => {
     if (!token) {
-      // console.log(token, "token");
       navigate("/login");
     }
-
-    fetchAllComm();
+    async function init() {
+      await fetchAllComm();
+      await getUserData();
+    }
+    init();
   }, []);
 
-  // console.log(token);
+  setTimeout(() => {
+    doesMentorHaveCommitee();
+  }, 2000);
+
+  // console.log(doesMentorHasComm);
+
+  function doesMentorHaveCommitee() {
+    commArr.map((item) => {
+      if (item.CommitteeMentor === mentorid) {
+        // console.log(item.CommitteeMentor, " space ", mentorid);
+        setDoesMentorHasComm(true);
+      }
+    });
+  }
 
   async function fetchRequest() {
     const res = await fetch("http://localhost:8000/fetchRequestOfUser", {
@@ -41,7 +58,6 @@ function TeacherPage() {
     });
     const data = await res.json();
 
-    // console.log(data);
     if (data.success) {
       setRequest(data.data);
     }
@@ -59,6 +75,21 @@ function TeacherPage() {
     }
   }
 
+  async function getUserData() {
+    const res = await fetch("http://localhost:8000/getUserData", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      setMentorId(data.data._id);
+    }
+  }
+
   async function postCommittee(cred) {
     const res = await fetch("http://localhost:8000/createCommittee", {
       method: "POST",
@@ -70,7 +101,6 @@ function TeacherPage() {
     });
     const data = await res.json();
     setCommmsg(data.message);
-    // console.log(data);
     return data;
   }
 
@@ -85,13 +115,11 @@ function TeacherPage() {
     });
     const data = await res.json();
     setEvmsg(data.message);
-    // console.log(data);
     return data;
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    // console.log(commName, commDesc, commHeadMail, commTechMail);
     postCommittee({
       CommitteeName: commName,
       CommitteeDescription: commDesc,
@@ -112,8 +140,6 @@ function TeacherPage() {
     });
   }
 
-  // console.log("comm arr", commArr);
-  console.log("req arr", request[0]);
   return (
     <>
       {/* sidebar frag  */}
@@ -132,11 +158,14 @@ function TeacherPage() {
                 <p className="text-white">No committee found</p>
               )}
               {commArr.map((comm) => {
-                return (
-                  <li key={comm._id} className="py-2 text-white">
-                    <button>{comm.CommitteeName}</button>
-                  </li>
-                );
+                console.log(comm.isAccountActive);
+                if (comm.isAccountActive === "true") {
+                  return (
+                    <li key={comm._id} className="py-2 text-white">
+                      <button>{comm.CommitteeName}</button>
+                    </li>
+                  );
+                }
               })}
               {/* <li className="py-2">
                 <button
@@ -167,6 +196,19 @@ function TeacherPage() {
               id="navbar-default"
             >
               <ul className="font-mmatlab edium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                {doesMentorHasComm && (
+                  <li>
+                    <button
+                      onClick={() => {
+                        setMain("CreateEvent");
+                        fetchRequest();
+                      }}
+                      className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    >
+                      <span className="ms-3">Create Event</span>
+                    </button>
+                  </li>
+                )}
                 <li>
                   <button
                     onClick={() => {
@@ -444,27 +486,29 @@ function TeacherPage() {
                     />
                   </div>
                   <br />
-                  <div className="">
-                    <label
-                      className="block text-sm text-gray-00"
-                      htmlFor="cus_name"
-                    >
-                      Event Time
-                    </label>
-                    <input
-                      value={evTimeSlt}
-                      onChange={(e) => setEvTimeSlt(e.target.value)}
-                      className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                      id="cus_name"
-                      name="cus_name"
-                      type="time"
-                      required
-                      aria-label="Name"
-                    />
-                  </div>
+
+                  <label
+                    htmlFor="role"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Select a Time Slot
+                  </label>
+                  <select
+                    required
+                    value={evTimeSlt}
+                    onChange={(e) => setEvTimeSlt(e.target.value)}
+                    id="role"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    <option selected="">Choose a slot</option>
+                    <option value="R1"> 9 am to 11 am</option>
+                    <option value="R2">11:15 2</option>
+                    <option value="R3">Room 3</option>
+                    <option value="R4">Room 4</option>
+                    <option value="R5">Room 5</option>
+                  </select>
 
                   <br />
-
                   <label
                     htmlFor="role"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
