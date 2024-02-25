@@ -11,7 +11,40 @@ function LoginPage() {
   const [msg, setMsg] = useState();
   const [accmsg, setAccmsg] = useState();
   const [accstatus, setAccstatus] = useState();
+  const [userRole, setUserRole] = useState();
+
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  async function getUserType() {
+    const res = await fetch("http://localhost:8000/getUserData", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+    if (data.data) {
+      const { isAdmin, isHod, isPrincipal, isStudent, isTeacher } = data.data;
+      console.log(isAdmin, isHod, isPrincipal, isStudent, isTeacher);
+      // if (isAdmin) {
+      //   navigate("/admin");
+      // }
+      // if (isHod) {
+      //   navigate("/hod");
+      // }
+      // if (isPrincipal) {
+      //   navigate("/principal");
+      // }
+      // if (isStudent) {
+      //   navigate("/student");
+      // }
+      // if (isTeacher) {
+      //   navigate("/teacher");
+      // }
+    }
+    return data;
+  }
 
   async function isAccActive(cred) {
     const res = await fetch("http://localhost:8000/isAccountActive", {
@@ -24,7 +57,10 @@ function LoginPage() {
     const data = await res.json();
     setAccmsg(data.message);
     setAccstatus(data.status);
-    console.log(data);
+    if (data.status) {
+      console.log(data, "user is active");
+      getUserType();
+    }
     return data;
   }
 
