@@ -335,78 +335,89 @@ function Principal() {
                 <div className="leading-loose">
                   <ul>
                     {request.map((req) => {
-                      return (
-                        <li
-                          className=" p-2 inline-block"
-                          key={req.RequestContent._id}
-                        >
-                          <div className="  max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                            <a href="#">
-                              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                      console.log(
+                        req.RequestContent.RequestCommittee.isAccountActive
+                      );
+                      if (
+                        req.RequestContent.RequestCommittee.isAccountActive ===
+                        "pending"
+                      ) {
+                        return (
+                          <li
+                            className=" p-2 inline-block"
+                            key={req.RequestContent._id}
+                          >
+                            <div className="  max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                              <a href="#">
+                                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                  {
+                                    req.RequestContent.RequestCommittee
+                                      .CommitteeName
+                                  }
+                                </h5>
+                              </a>
+                              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                                 {
                                   req.RequestContent.RequestCommittee
-                                    .CommitteeName
+                                    .CommitteeDescription
                                 }
-                              </h5>
-                            </a>
-                            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                              {
-                                req.RequestContent.RequestCommittee
-                                  .CommitteeDescription
-                              }
-                            </p>
-                            <p>
-                              Mentor -{" "}
-                              {
-                                req.RequestContent.RequestCommittee
-                                  .CommitteeMentor.username
-                              }
-                            </p>
-                            <p>
-                              Committee Head -{" "}
-                              {
-                                req.RequestContent.RequestCommittee
-                                  .CommitteeHead.username
-                              }
-                            </p>
-                            <p>
-                              Technical Head -{" "}
-                              {
-                                req.RequestContent.RequestCommittee
-                                  .CommitteeTechnicalHead.username
-                              }
-                            </p>
+                              </p>
+                              <p>
+                                Mentor -{" "}
+                                {
+                                  req.RequestContent.RequestCommittee
+                                    .CommitteeMentor.username
+                                }
+                              </p>
+                              <p>
+                                Committee Head -{" "}
+                                {
+                                  req.RequestContent.RequestCommittee
+                                    .CommitteeHead.username
+                                }
+                              </p>
+                              <p>
+                                Technical Head -{" "}
+                                {
+                                  req.RequestContent.RequestCommittee
+                                    .CommitteeTechnicalHead.username
+                                }
+                              </p>
 
-                            <p>
-                              {" "}
-                              status -{" "}
-                              {
-                                req.RequestContent.RequestCommittee
-                                  .isAccountActive
-                              }{" "}
-                            </p>
-                            <button
-                              onClick={() =>
-                                handleApprove(
-                                  "accepted",
-                                  req.RequestContent._id
-                                )
-                              }
-                              className="border-2 p-1 m-2 bg-green-500 text-white rounded-lg "
-                            >
-                              Approve
-                            </button>
-                            <button
-                              onClick={() =>
-                                handleReject("rejected", req.RequestContent._id)
-                              }
-                              className="border-2 p-1 m-2 bg-red-500 text-white rounded-lg"
-                            >
-                              Reject
-                            </button>
-                          </div>
-                        </li>
-                      );
+                              <p>
+                                {" "}
+                                status -{" "}
+                                {
+                                  req.RequestContent.RequestCommittee
+                                    .isAccountActive
+                                }{" "}
+                              </p>
+                              <button
+                                onClick={() =>
+                                  handleApprove(
+                                    "accepted",
+                                    req.RequestContent._id
+                                  )
+                                }
+                                className="border-2 p-1 m-2 bg-green-500 text-white rounded-lg "
+                              >
+                                Approve
+                              </button>
+                              <button
+                                onClick={() =>
+                                  handleReject(
+                                    "rejected",
+                                    req.RequestContent._id
+                                  )
+                                }
+                                className="border-2 p-1 m-2 bg-red-500 text-white rounded-lg"
+                              >
+                                Reject
+                              </button>
+                            </div>
+                          </li>
+                        );
+                      }
                     })}
                   </ul>
                 </div>

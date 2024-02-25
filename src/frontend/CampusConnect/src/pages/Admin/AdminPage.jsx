@@ -32,7 +32,32 @@ function AdminPage() {
 
     return data;
   }
-  console.log(requestdata);
+  // console.log(requestdata);
+
+  async function handleRequest(cred) {
+    const res = await fetch("http://localhost:8000/handleRequest", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(cred),
+    });
+    const data = await res.json();
+    console.log(data);
+    return data;
+  }
+
+  function handleApprove(status, id) {
+    console.log("aprove click", status, id);
+    handleRequest({ status, requestId: id });
+  }
+
+  function handleReject(status, id) {
+    console.log("reject click", status, id);
+    handleRequest({ status, requestId: id });
+  }
+
   return (
     <>
       {/* sidebar frag  */}
@@ -93,8 +118,52 @@ function AdminPage() {
               <>
                 <p>fetching all user Request</p>
                 {requestdata.map((item) => {
-                  console.log(item._id);
-                  return <li key={item._id}> {item._id} </li>;
+                  console.log(item.RequestContent);
+                  if (item.RequestContent.RequestStatus === "pending") {
+                    return (
+                      <div
+                        className="my-3 p-3 rounded-md bg-slate-200"
+                        key={item.RequestContent._id}
+                      >
+                        <p>
+                          Request Status - {item.RequestContent.RequestStatus}
+                        </p>
+                        <p>
+                          Email -{" "}
+                          {item.RequestContent.RequestToCreateNewUser.email}
+                        </p>
+                        <p>
+                          Department -{" "}
+                          {
+                            item.RequestContent.RequestToCreateNewUser
+                              .Department
+                          }{" "}
+                        </p>
+
+                        <p>
+                          User Name -{" "}
+                          {item.RequestContent.RequestToCreateNewUser.username}
+                        </p>
+                        <button
+                          onClick={() =>
+                            handleApprove("accepted", item.RequestContent._id)
+                          }
+                          className="border-2 p-1 m-2 bg-green-500 text-white rounded-lg "
+                        >
+                          Approve
+                        </button>
+
+                        <button
+                          onClick={() =>
+                            handleReject("rejected", item.RequestContent._id)
+                          }
+                          className="border-2 p-1 m-2 bg-red-500 text-white rounded-lg"
+                        >
+                          Reject
+                        </button>
+                      </div>
+                    );
+                  }
                 })}
               </>
             )}
