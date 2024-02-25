@@ -8,6 +8,7 @@ import { useState } from "react";
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [msg, setMsg] = useState();
   const navigate = useNavigate();
   async function handleLogin(cred) {
     const res = await fetch("http://localhost:8000/login", {
@@ -18,6 +19,7 @@ function LoginPage() {
       body: JSON.stringify(cred),
     });
     const { success, message } = await res.json();
+    setMsg(message);
     if (success) {
       // console.log("success", email);
       localStorage.setItem("email", email);
@@ -91,7 +93,7 @@ function LoginPage() {
             whileHover={{ scale: 1.2 }}
             className="py-3 px-20 bg-primarycolor bg-yellow-400 rounded-full text-white font-bold uppercase text-lg mt-4 transform hover:translate-y-1 transition-all duration-500 hover:bg-yellow-500"
           >
-            Register
+            Login
           </motion.button>
           <br />
           <p className="text-sm text-slate-600">
@@ -100,6 +102,7 @@ function LoginPage() {
               SignUp
             </Link>
           </p>
+          {msg && <p> {msg} </p>}
         </motion.form>
       </div>
     </>

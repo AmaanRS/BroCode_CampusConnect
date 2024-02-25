@@ -10,6 +10,7 @@ export default function ProfilePage() {
   const [isHod, setIsHod] = useState(false);
   const [isTeacher, setIsTeacher] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [msg, setMsg] = useState();
 
   async function postProfile(cred) {
     const res = await fetch("http://localhost:8000/createUser", {
@@ -20,12 +21,15 @@ export default function ProfilePage() {
       body: JSON.stringify(cred),
     });
     const data = await res.json(cred);
-    // console.log(data);
+
+    console.log(data);
+    setMsg(data.message);
     return data;
   }
 
   function handleSubmit(e) {
     e.preventDefault();
+    console.log("clicked");
     switch (role) {
       case "student":
         setIsStudent(true);
@@ -67,17 +71,17 @@ export default function ProfilePage() {
       default:
         break;
     }
-    // console.log(
-    //   email,
-    //   username,
-    //   department,
-    //   isStudent,
-    //   isTeacher,
-    //   isHod,
-    //   isAdmin,
-    //   isPrincipal
-    // );
-    postProfile({
+    console.log(
+      email,
+      username,
+      department,
+      isStudent,
+      isTeacher,
+      isHod,
+      isAdmin,
+      isPrincipal
+    );
+    const data = postProfile({
       email,
       username,
       department,
@@ -87,96 +91,95 @@ export default function ProfilePage() {
       isAdmin,
       isPrincipal,
     });
+    console.log(data);
+    setMsg(data.message);
   }
 
   return (
-    <div>
-      <div className="  min-h-screen flex justify-center items-center">
-        <div className="bg-gray-200  rounded-lg">
-          {/* <div className="p-4 sm:ml-64"> */}
-          <div className="p-0 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-            <div className="leading-loose">
-              <form
-                onSubmit={handleSubmit}
-                className="max-w-xl m-4 p-10 bg-white rounded shadow-xl"
-              >
-                <p className="text-gray-800 font-medium">User information</p>
-                <div className="">
-                  <label
-                    className="block text-sm text-gray-00"
-                    htmlFor="cus_name"
-                  >
-                    Name
-                  </label>
-                  <input
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                    id="cus_name"
-                    name="cus_name"
-                    type="text"
-                    required
-                    placeholder="Your Name"
-                    aria-label="Name"
-                  />
-                </div>
-
-                <label
-                  htmlFor="role"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Select a Role
-                </label>
-                <select
-                  required
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  id="role"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                >
-                  <option selected="">Choose a role</option>
-                  <option value="student">Student</option>
-                  <option value="principal">Principal</option>
-                  <option value="hod">Hod</option>
-                  <option value="admin">Admin</option>
-                  <option value="teacher">Teacher</option>
-                </select>
-                <br />
-                <label
-                  htmlFor="department"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Select your Department
-                </label>
-                <select
-                  required
-                  value={department}
-                  onChange={(e) => setDept(e.target.value)}
-                  id="department"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                >
-                  <option selected="">Choose a DEPT</option>
-                  <option value="it">IT</option>
-                  <option value="comps">COMPS</option>
-                  <option value="extc">EXTC</option>
-                  <option value="civil">CIVIL</option>
-                  <option value="admin">ADMIN</option>
-                </select>
-
-                <div className="mt-4">
-                  <button
-                    className="px-4 py-1 text-white font-light tracking-wider bg-gray-900 rounded"
-                    type="submit"
-                  >
-                    UPDATE
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+    <section className="h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
+      <div className="md:w-1/3 max-w-sm">
+        <img
+          src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+          alt="Sample image"
+        />
       </div>
-    </div>
-    // </div>
+      <div className="md:w-1/3 max-w-sm">
+        {/*  */}
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-xl m-4 p-10 bg-white rounded shadow-xl"
+        >
+          <p className="text-gray-800 font-medium">User information</p>
+          <div className="">
+            <label className="block text-sm text-gray-00" htmlFor="cus_name">
+              Name
+            </label>
+            <input
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
+              id="cus_name"
+              name="cus_name"
+              type="text"
+              required
+              placeholder="Your Name"
+              aria-label="Name"
+            />
+          </div>
+
+          <label
+            htmlFor="role"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            Select a Role
+          </label>
+          <select
+            required
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            id="role"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option selected="">Choose a role</option>
+            <option value="student">Student</option>
+            <option value="principal">Principal</option>
+            <option value="hod">Hod</option>
+            <option value="admin">Admin</option>
+            <option value="teacher">Teacher</option>
+          </select>
+          <br />
+          <label
+            htmlFor="department"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            Select your Department
+          </label>
+          <select
+            required
+            value={department}
+            onChange={(e) => setDept(e.target.value)}
+            id="department"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option selected="">Choose a DEPT</option>
+            <option value="it">IT</option>
+            <option value="comps">COMPS</option>
+            <option value="extc">EXTC</option>
+            <option value="civil">CIVIL</option>
+            <option value="admin">ADMIN</option>
+          </select>
+
+          <div className="mt-4">
+            <button
+              className="px-4 py-1 text-white font-light tracking-wider bg-gray-900 rounded"
+              type="submit"
+            >
+              UPDATE
+            </button>
+          </div>
+          {msg && <p> {msg} </p>}
+        </form>
+      </div>
+    </section>
   );
 }

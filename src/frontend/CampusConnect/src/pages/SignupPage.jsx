@@ -14,6 +14,8 @@ function SignupPage() {
   const [passErrMsg, setPassErrmsg] = useState("");
   const [isOtp, setIsOtp] = useState(false);
   const [otp, setOtp] = useState("");
+  const [msg, setMsg] = useState();
+  const [otpmsg, setOtpmsg] = useState();
 
   const navigate = useNavigate();
 
@@ -39,6 +41,8 @@ function SignupPage() {
       body: JSON.stringify(cred),
     });
     const { message, success, token } = await res.json();
+    console.log(message, success);
+    setMsg(message);
     if (success) {
       setIsOtp(true);
       localStorage.setItem("token", token);
@@ -58,12 +62,10 @@ function SignupPage() {
       },
       body: JSON.stringify(cred),
     });
-    // const { message, success } = await res.json();
-    // if (success) {
-    //   setIsOtp(true);
-    // }
+
     const { success, message } = await res.json();
     // console.log(success, message);
+    setOtpmsg(message);
     if (success) {
       navigate("/login");
     }
@@ -177,6 +179,8 @@ function SignupPage() {
               >
                 Register
               </button>
+
+              {msg && <p>msg</p>}
             </>
           )}
 
@@ -199,6 +203,7 @@ function SignupPage() {
               >
                 Enter OTP
               </button>
+              {otpmsg && <p>{otpmsg}</p>}
             </>
           )}
 

@@ -12,6 +12,9 @@ function TeacherPage() {
   const [evDate, setEvDate] = useState();
   const [evTimeSlt, setEvTimeSlt] = useState();
   const [evRm, setEvRm] = useState();
+  const [commmsg, setCommmsg] = useState();
+  const [evmsg, setEvmsg] = useState();
+
   // console.log(token);
   async function postCommittee(cred) {
     const res = await fetch("http://localhost:8000/createCommittee", {
@@ -23,6 +26,7 @@ function TeacherPage() {
       body: JSON.stringify(cred),
     });
     const data = await res.json();
+    setCommmsg(data.message);
     // console.log(data);
     return data;
   }
@@ -37,6 +41,7 @@ function TeacherPage() {
       body: JSON.stringify(cred),
     });
     const data = await res.json();
+    setEvmsg(data.message);
     console.log(data);
     return data;
   }
@@ -367,6 +372,7 @@ function TeacherPage() {
                   </div>
                 </form>
               </div>
+              {commmsg && <p> {commmsg} </p>}
             </div>
           )}
           {main === "CreateEvent" && (
@@ -488,6 +494,7 @@ function TeacherPage() {
                   </div>
                 </form>
               </div>
+              {evmsg && <p> {evmsg} </p>}
             </div>
           )}
         </div>
