@@ -112,6 +112,30 @@ function Principal() {
     });
   }
 
+  async function handleRequest(cred) {
+    const res = await fetch("http://localhost:8000/handleRequest", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(cred),
+    });
+    const data = await res.json();
+    console.log(data);
+    return data;
+  }
+
+  function handleApprove(status, id) {
+    console.log("aprove click", status, id);
+    handleRequest({ status, requestId: id });
+  }
+
+  function handleReject(status, id) {
+    console.log("reject click", status, id);
+    handleRequest({ status, requestId: id });
+  }
+
   // console.log("comm arr", commArr);
   console.log("req arr", request[0]);
   return (
@@ -361,10 +385,23 @@ function Principal() {
                                   .isAccountActive
                               }{" "}
                             </p>
-                            <button className="border-2 p-1 m-2 bg-green-500 text-white rounded-lg ">
+                            <button
+                              onClick={() =>
+                                handleApprove(
+                                  "accepted",
+                                  req.RequestContent._id
+                                )
+                              }
+                              className="border-2 p-1 m-2 bg-green-500 text-white rounded-lg "
+                            >
                               Approve
                             </button>
-                            <button className="border-2 p-1 m-2 bg-red-500 text-white rounded-lg">
+                            <button
+                              onClick={() =>
+                                handleReject("rejected", req.RequestContent._id)
+                              }
+                              className="border-2 p-1 m-2 bg-red-500 text-white rounded-lg"
+                            >
                               Reject
                             </button>
                           </div>
